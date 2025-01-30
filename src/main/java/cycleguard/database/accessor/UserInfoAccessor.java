@@ -1,6 +1,6 @@
-package cycleguard.database;
+package cycleguard.database.accessor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import cycleguard.database.entry.UserInfo;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -10,8 +10,7 @@ public class UserInfoAccessor extends DatabaseAccessor<UserInfo> {
 	private final DynamoDbTable<UserInfo> tableInstance;
 
 	protected UserInfoAccessor() {
-		super();
-		tableInstance = client.table("CycleGuard-UserInfo", TableSchema.fromBean(UserInfo.class));
+		tableInstance = getClient().table("CycleGuard-UserInfo", TableSchema.fromBean(UserInfo.class));
 	}
 
 	@Override

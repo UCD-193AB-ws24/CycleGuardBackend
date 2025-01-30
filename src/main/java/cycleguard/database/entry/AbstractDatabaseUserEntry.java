@@ -1,11 +1,13 @@
-package cycleguard.database;
+package cycleguard.database.entry;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-// This abstract class stuff is the only useful thing I learned from Posnett ECS160
+/**
+ * Abstract class
+ */
 @DynamoDbBean
-public abstract class AbstractDatabaseEntry {
+public abstract class AbstractDatabaseUserEntry extends AbstractDatabaseEntry {
 	private long userId;
 
 	@DynamoDbPartitionKey

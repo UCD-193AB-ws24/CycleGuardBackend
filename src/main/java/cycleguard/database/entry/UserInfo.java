@@ -1,10 +1,9 @@
-package cycleguard.database;
+package cycleguard.database.entry;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 @DynamoDbBean
-public final class UserInfo extends cycleguard.database.AbstractDatabaseEntry {
+public final class UserInfo extends AbstractDatabaseUserEntry {
 	private String name;
 	private long cycleCoins;
 

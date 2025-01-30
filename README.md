@@ -1,6 +1,6 @@
 # CycleGuard Backend
 
-The CycleGuard Backend repository is an IntelliJ Gradle project. It uses Java 17 (Amazon Corretto 17.0.12), along with Gradle 8.2 to install required libraries. It is an intermediate interface between the mobile app and the database, for data validation and authenticaion before accessing the database. It interfaces with AWS DynamoDB to store information.
+The CycleGuard Backend repository is an IntelliJ Gradle project using the Spring framework. It uses Java 17 (Amazon Corretto 17.0.12), along with Gradle 8.2 to install required libraries. It is an intermediate interface between the mobile app and the database, for data validation and authenticaion before accessing the database. It interfaces with AWS DynamoDB to store information.
 
 For now, documentation is left as JSDoc-formatted comments on classes, methods, and instance variables. Eventually, we will use these comments to generate a documentation page with software such as Doxygen.
 

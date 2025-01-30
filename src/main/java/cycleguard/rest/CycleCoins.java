@@ -1,7 +1,8 @@
 package cycleguard.rest;
 
-import cycleguard.database.UserInfo;
-import cycleguard.database.UserInfoAccessor;
+import cycleguard.database.accessor.AuthTokenAccessor;
+import cycleguard.database.entry.UserInfo;
+import cycleguard.database.accessor.UserInfoAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 public class CycleCoins {
 	@Autowired
 	UserInfoAccessor userInfoAccessor;
+//	@Autowired
+//	AuthTokenAccessor authTokenAccessor;
 	@GetMapping("/cyclecoins/getcount")
 	public long getCycleCoins() {
 		UserInfo info = userInfoAccessor.getEntry(69420);
