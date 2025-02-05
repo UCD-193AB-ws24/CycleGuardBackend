@@ -2,6 +2,9 @@ package cycleguard.rest.account;
 
 import cycleguard.auth.AccountService;
 import cycleguard.auth.AccountCredentials;
+import cycleguard.database.accessor.AbstractDatabaseAccessor;
+import cycleguard.database.accessor.UserCredentialsAccessor;
+import cycleguard.database.entry.HashedUserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,14 +22,22 @@ public final class CreateAccount {
 	private AccountService accountService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private UserCredentialsAccessor userCredentialsAccessor;
+	@Autowired
+	private CheckUsername checkUsername;
 
-	@PostMapping("/createAccount")
-	public long createAccount(@RequestBody @NonNull AccountCredentials credentials) {
+	@PostMapping("/account/create")
+	public String createAccount(@RequestBody @NonNull AccountCredentials credentials) {
+		if (checkUsername.checkUsername(credentials)) return "DUPLICATE";
+
 		System.out.println(credentials.getUsername());
 		System.out.println(credentials.getPassword());
 
 		System.out.println(passwordEncoder.encode(credentials.getPassword()));
+		HashedUserCredentials hashedUserCredentials = accountService.createHashedUser(credentials);
+		userCredentialsAccessor.setEntry(hashedUserCredentials);
 
-		return 69;
+		return "ArbitraryToken";
 	}
 }
