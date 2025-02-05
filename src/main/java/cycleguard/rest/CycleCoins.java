@@ -15,7 +15,8 @@ public class CycleCoins {
 //	AuthTokenAccessor authTokenAccessor;
 	@GetMapping("/cyclecoins/getcount")
 	public long getCycleCoins() {
-		UserInfo info = userInfoAccessor.getEntry(69420);
+		System.out.println("/cyclecoins/getcount called");
+		UserInfo info = userInfoAccessor.getEntry("javagod123");
 
 		return info.getCycleCoins();
 	}
@@ -25,10 +26,15 @@ public class CycleCoins {
 		System.out.println("Earning " + body.coins + " coins...");
 
 
-		UserInfo info = userInfoAccessor.getEntry(69420);
-		if (info == null) info = new UserInfo();
+		UserInfo info = userInfoAccessor.getEntry("javagod123");
+		if (info == null) {
+			info = new UserInfo();
+			info.setUsername("javagod123");
+			info.setEmail("jhfeng@ucdavis.edu");
+		}
 
 		info.setCycleCoins(info.getCycleCoins() + body.coins);
+
 		userInfoAccessor.setEntry(info);
 
 		return info.getCycleCoins();

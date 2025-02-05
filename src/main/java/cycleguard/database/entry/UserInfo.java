@@ -2,10 +2,18 @@ package cycleguard.database.entry;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+/**
+ * {@link DynamoDbBean} linking a username to that user's basic data.
+ *
+ * <br>
+ * <ul>
+ *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ * </ul>
+ */
 @DynamoDbBean
 public final class UserInfo extends AbstractDatabaseUserEntry {
-	private String name;
 	private long cycleCoins;
+	private String email;
 
 	public long getCycleCoins() {
 		return cycleCoins;
@@ -15,11 +23,11 @@ public final class UserInfo extends AbstractDatabaseUserEntry {
 		this.cycleCoins = cycleCoins;
 	}
 
-	public String getName() {
-		return name;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
