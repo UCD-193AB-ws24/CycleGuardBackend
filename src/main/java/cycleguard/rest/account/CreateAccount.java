@@ -27,17 +27,15 @@ public final class CreateAccount {
 	@Autowired
 	private CheckUsername checkUsername;
 
+	@Autowired
+	private Login login;
+
 	@PostMapping("/account/create")
 	public String createAccount(@RequestBody @NonNull AccountCredentials credentials) {
 		if (checkUsername.checkUsername(credentials)) return "DUPLICATE";
 
-		System.out.println(credentials.getUsername());
-		System.out.println(credentials.getPassword());
+		accountService.createAccount(credentials);
 
-		System.out.println(passwordEncoder.encode(credentials.getPassword()));
-		HashedUserCredentials hashedUserCredentials = accountService.createHashedUser(credentials);
-		userCredentialsAccessor.setEntry(hashedUserCredentials);
-
-		return "ArbitraryToken";
+		return login.login(credentials);
 	}
 }
