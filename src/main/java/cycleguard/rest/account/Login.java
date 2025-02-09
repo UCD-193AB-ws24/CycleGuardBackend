@@ -31,7 +31,7 @@ public final class Login {
 	private AccessTokenManager accessTokenManager;
 
 
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public String login(@RequestBody @NonNull AccountCredentials credentials) {
 		if (!accountService.isValidLogin(credentials)) return "INVALID";
 
