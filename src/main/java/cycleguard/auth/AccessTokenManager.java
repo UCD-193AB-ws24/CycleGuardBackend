@@ -1,7 +1,7 @@
 package cycleguard.auth;
 
 import cycleguard.database.accessor.AuthTokenAccessor;
-import cycleguard.database.entry.AuthToken;
+import cycleguard.database.accessor.AuthTokenAccessor.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

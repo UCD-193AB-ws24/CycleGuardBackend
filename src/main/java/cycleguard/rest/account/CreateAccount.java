@@ -1,10 +1,8 @@
 package cycleguard.rest.account;
 
-import cycleguard.auth.AccountService;
 import cycleguard.auth.AccountCredentials;
-import cycleguard.database.accessor.AbstractDatabaseAccessor;
+import cycleguard.auth.AccountService;
 import cycleguard.database.accessor.UserCredentialsAccessor;
-import cycleguard.database.entry.HashedUserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,8 +1,8 @@
 package cycleguard.rest;
 
-import cycleguard.database.accessor.AuthTokenAccessor;
-import cycleguard.database.entry.UserInfo;
+
 import cycleguard.database.accessor.UserInfoAccessor;
+import cycleguard.database.accessor.UserInfoAccessor.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;

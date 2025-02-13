@@ -1,7 +1,7 @@
 package cycleguard.database.accessor;
 
-import cycleguard.database.entry.AbstractDatabaseEntry;
-import cycleguard.database.entry.AbstractDatabaseUserEntry;
+import cycleguard.database.AbstractDatabaseEntry;
+import cycleguard.database.AbstractDatabaseUserEntry;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
