@@ -6,7 +6,10 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Configuration
 public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoAccessor.PurchaseInfo> {
@@ -39,7 +42,7 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 	@DynamoDbBean
 	public static final class PurchaseInfo extends AbstractDatabaseUserEntry {
 		private long cycleCoins;
-		private List<String> themesOwned;
+		private Set<String> themesOwned = new TreeSet<>();
 
 		public long getCycleCoins() {
 			return cycleCoins;
@@ -49,11 +52,11 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 			this.cycleCoins = cycleCoins;
 		}
 
-		public List<String> getThemesOwned() {
+		public Set<String> getThemesOwned() {
 			return themesOwned;
 		}
 
-		public void setThemesOwned(List<String> themesOwned) {
+		public void setThemesOwned(Set<String> themesOwned) {
 			this.themesOwned = themesOwned;
 		}
 	}
