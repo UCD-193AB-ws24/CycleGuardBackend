@@ -19,6 +19,11 @@ public class UserCredentialsAccessor extends AbstractDatabaseAccessor<UserCreden
 		return tableInstance;
 	}
 
+	@Override
+	protected HashedUserCredentials getBlankEntry() {
+		return new HashedUserCredentials();
+	}
+
 	@DynamoDbBean
 	public static final class HashedUserCredentials extends AbstractDatabaseUserEntry {
 		private String hashedPassword;

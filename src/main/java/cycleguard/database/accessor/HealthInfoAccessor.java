@@ -20,6 +20,11 @@ public class HealthInfoAccessor extends AbstractDatabaseAccessor<HealthInfo> {
 		return tableInstance;
 	}
 
+	@Override
+	protected HealthInfo getBlankEntry() {
+		return new HealthInfo();
+	}
+
 
 	/**
 	 * {@link DynamoDbBean} linking a username to that user's health data.

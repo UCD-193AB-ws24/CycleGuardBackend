@@ -9,16 +9,21 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import java.util.List;
 
 @Configuration
-public class UserPurchasesAccessor extends AbstractDatabaseAccessor<UserPurchasesAccessor.PurchaseInfo> {
+public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoAccessor.PurchaseInfo> {
 	private final DynamoDbTable<PurchaseInfo> tableInstance;
 
-	protected UserPurchasesAccessor() {
+	protected PurchaseInfoAccessor() {
 		tableInstance = getClient().table("CycleGuard-PurchaseInfo", TableSchema.fromBean(PurchaseInfo.class));
 	}
 
 	@Override
 	protected DynamoDbTable<PurchaseInfo> getTableInstance() {
 		return tableInstance;
+	}
+
+	@Override
+	protected PurchaseInfo getBlankEntry() {
+		return new PurchaseInfo();
 	}
 
 

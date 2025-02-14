@@ -23,4 +23,9 @@ public abstract class AbstractDatabaseUserEntry extends AbstractDatabaseEntry {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	@Override
+	public void setPrimaryKey(String key) {
+		setUsername(key);
+	}
 }

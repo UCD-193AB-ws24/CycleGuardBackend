@@ -57,17 +57,6 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	}
 
 	/**
-	 * Returns the DynamoDB-specific key to a table, given a <code>long</code>
-	 * {@link DynamoDbPartitionKey}.
-	 *
-	 * @param key Partition key of the object to access
-	 * @return {@link Key} to access an object of the current table
-	 */
-	private Key getKey(long key) {
-		return Key.builder().partitionValue(key).build();
-	}
-
-	/**
 	 * Returns the DynamoDB-specific key to a table, given a {@link String}
 	 * {@link DynamoDbPartitionKey}.
 	 *
@@ -79,19 +68,7 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	}
 
 	/**
-	 * Returns the entry in a table, given a <code>long</code>
-	 * {@link DynamoDbPartitionKey}.
-	 *
-	 * @param key Value of partition key of the object to access
-	 * @return Object of type {@link EntryType}: database object with that partition key<br>
-	 * <code>null</code> if the key does not exist in the table
-	 */
-	public EntryType getEntry(long key) {
-		return getTableInstance().getItem(getKey(key));
-	}
-
-	/**
-	 * Returns the entry in a table, given a <code>long</code>
+	 * Returns the entry in a table, given a {@link String}
 	 * {@link DynamoDbPartitionKey}.
 	 *
 	 * @param key Value of partition key of the object to access
@@ -102,14 +79,14 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 		return getTableInstance().getItem(getKey(key));
 	}
 
-	/**
-	 * Returns if the <code>long</code> {@link DynamoDbPartitionKey} has an associated entry in the table.
-	 *
-	 * @param key Value of partition key of the object to access
-	 * @return <code>true</code> if the key is found in the table, <code>false</code> otherwise
-	 */
-	public boolean hasEntry(long key) {
-		return getTableInstance().getItem(getKey(key)) != null;
+	public EntryType getEntryOrDefaultBlank(String key) {
+		EntryType entry = getTableInstance().getItem(getKey(key));
+		if (entry == null) {
+			entry = getBlankEntry();
+			entry.setPrimaryKey(key);
+		}
+//		setEntry(entry);
+		return entry;
 	}
 
 	/**
@@ -135,17 +112,6 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	/**
 	 * Deletes the item in the table with
 	 * {@link DynamoDbPartitionKey}
-	 * matching the provided <code>long</code> <code>key</code>. Does nothing if key is not found.
-	 *
-	 * @param key Value of partition key of the object to delete
-	 */
-	public void deleteEntry(long key) {
-		getTableInstance().deleteItem(getKey(key));
-	}
-
-	/**
-	 * Deletes the item in the table with
-	 * {@link DynamoDbPartitionKey}
 	 * matching the provided {@link String} <code>key</code>. Does nothing if key is not found.
 	 *
 	 * @param key Value of partition key of the object to delete
@@ -153,6 +119,8 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	public void deleteEntry(String key) {
 		getTableInstance().deleteItem(getKey(key));
 	}
+
+	protected abstract EntryType getBlankEntry();
 
 	/**
 	 * Must be implemented in subclasses. Returns a singleton instance of the {@link DynamoDbTable}.

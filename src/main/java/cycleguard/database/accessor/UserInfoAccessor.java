@@ -19,6 +19,11 @@ public class UserInfoAccessor extends AbstractDatabaseAccessor<UserInfoAccessor.
 		return tableInstance;
 	}
 
+	@Override
+	protected UserInfo getBlankEntry() {
+		return new UserInfo();
+	}
+
 
 	/**
 	 * {@link DynamoDbBean} linking a username to that user's basic data.

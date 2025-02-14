@@ -16,9 +16,16 @@ public class AuthTokenAccessor extends AbstractDatabaseAccessor<AuthTokenAccesso
 	}
 
 	@Override
+	protected AuthToken getBlankEntry() {
+		return new AuthToken();
+	}
+
+	@Override
 	protected DynamoDbTable<AuthToken> getTableInstance() {
 		return tableInstance;
 	}
+
+
 
 	/**
 	 * {@link DynamoDbBean} linking an authentication token into a username.
@@ -48,6 +55,11 @@ public class AuthTokenAccessor extends AbstractDatabaseAccessor<AuthTokenAccesso
 
 		public void setUsername(String username) {
 			this.username = username;
+		}
+
+		@Override
+		public void setPrimaryKey(String key) {
+			setToken(username);
 		}
 	}
 
