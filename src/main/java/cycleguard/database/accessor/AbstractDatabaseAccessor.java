@@ -85,7 +85,6 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 			entry = getBlankEntry();
 			entry.setPrimaryKey(key);
 		}
-//		setEntry(entry);
 		return entry;
 	}
 
