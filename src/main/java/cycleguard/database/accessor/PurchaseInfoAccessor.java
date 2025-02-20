@@ -42,7 +42,7 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 	@DynamoDbBean
 	public static final class PurchaseInfo extends AbstractDatabaseUserEntry {
 		private long cycleCoins;
-		private Set<String> themesOwned = new TreeSet<>();
+		private List<String> themesOwned = new ArrayList<>();
 
 		public long getCycleCoins() {
 			return cycleCoins;
@@ -52,11 +52,11 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 			this.cycleCoins = cycleCoins;
 		}
 
-		public Set<String> getThemesOwned() {
+		public List<String> getThemesOwned() {
 			return themesOwned;
 		}
 
-		public void setThemesOwned(Set<String> themesOwned) {
+		public void setThemesOwned(List<String> themesOwned) {
 			this.themesOwned = themesOwned;
 		}
 	}

@@ -3,15 +3,12 @@ package cycleguard.rest.purchases;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.PurchaseInfoAccessor;
-import cycleguard.database.accessor.UserInfoAccessor;
-import cycleguard.database.accessor.UserInfoAccessor.UserInfo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
-import static cycleguard.database.accessor.PurchaseInfoAccessor.*;
+import static cycleguard.database.accessor.PurchaseInfoAccessor.PurchaseInfo;
 
 @RestController
 public class CycleCoins {

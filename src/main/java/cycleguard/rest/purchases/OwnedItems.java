@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,7 +25,7 @@ public final class OwnedItems {
 	private ItemInfoService itemInfoService;
 
 	@GetMapping("/purchaseInfo/ownedItems")
-	public Set<String> buy(@RequestHeader("Token") String token, HttpServletResponse response) {
+	public List<String> buy(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);
 		if (username == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
