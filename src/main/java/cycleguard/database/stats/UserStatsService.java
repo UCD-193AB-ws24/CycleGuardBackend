@@ -1,12 +1,9 @@
 package cycleguard.database.stats;
 
 import cycleguard.database.rides.ProcessRideService;
-import cycleguard.util.StringDoubles;
 import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 import static cycleguard.util.StringDoubles.fromDouble;
 import static cycleguard.util.StringDoubles.toDouble;
