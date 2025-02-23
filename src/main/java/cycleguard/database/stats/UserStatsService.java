@@ -17,19 +17,17 @@ public class UserStatsService {
 	private UserStatsAccessor userStatsAccessor;
 
 	public UserStats getUserStats(String username) {
-		UserStats entry = userStatsAccessor.getEntry(username);
-		if (entry == null) createUser(username);
-		return entry;
+		return userStatsAccessor.getEntryOrDefaultBlank(username);
 	}
 
-	public void createUser(String username) {
+	public UserStats createUser(String username) {
 		UserStats userStats = new UserStats();
 		userStats.setUsername(username);
-		userStats.setAccountCreationTime(Instant.now().getEpochSecond());
 		userStatsAccessor.setEntry(userStats);
+		return userStats;
 	}
 	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo) {
-		UserStats stats = userStatsAccessor.getEntry(username);
+		UserStats stats = getUserStats(username);
 
 		stats.setTotalDistance(fromDouble(toDouble(stats.getTotalDistance()) + rideInfo.distance));
 		stats.setTotalTime(fromDouble(toDouble(stats.getTotalTime()) + rideInfo.time));
@@ -45,6 +43,8 @@ public class UserStatsService {
 
 		stats.setRideStreak(streak);
 		stats.setLastRideDay(curDay);
+
+		stats.setBestStreak(Math.max(stats.getBestStreak(), streak));
 
 		userStatsAccessor.setEntry(stats);
 	}

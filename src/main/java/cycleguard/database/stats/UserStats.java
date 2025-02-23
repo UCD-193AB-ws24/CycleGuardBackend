@@ -3,6 +3,8 @@ package cycleguard.database.stats;
 import cycleguard.database.AbstractDatabaseUserEntry;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+import java.time.Instant;
+
 /**
  * {@link DynamoDbBean} linking a username to that user's stats.
  *
@@ -16,7 +18,13 @@ public final class UserStats extends AbstractDatabaseUserEntry {
 	private long accountCreationTime;
 	private String totalDistance, totalTime;
 	private long lastRideDay;
-	private long rideStreak;
+	private long rideStreak, bestStreak;
+
+	public UserStats() {
+		accountCreationTime = Instant.now().getEpochSecond();
+		totalDistance="0";
+		totalTime="0";
+	}
 
 	public long getAccountCreationTime() {
 		return accountCreationTime;
@@ -56,5 +64,13 @@ public final class UserStats extends AbstractDatabaseUserEntry {
 
 	public void setRideStreak(long rideStreak) {
 		this.rideStreak = rideStreak;
+	}
+
+	public long getBestStreak() {
+		return bestStreak;
+	}
+
+	public void setBestStreak(long bestStreak) {
+		this.bestStreak = bestStreak;
 	}
 }

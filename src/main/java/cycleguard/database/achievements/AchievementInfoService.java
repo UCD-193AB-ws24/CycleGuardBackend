@@ -66,9 +66,9 @@ public class AchievementInfoService {
 			AchievementProgress dist2 = progressMap.getOrDefault(2, new AchievementProgress());
 			AchievementProgress dist3 = progressMap.getOrDefault(3, new AchievementProgress());
 
-			dist1.setCurrentProgress(Math.max(distance, 10L));
-			dist2.setCurrentProgress(Math.max(distance, 50L));
-			dist3.setCurrentProgress(Math.max(distance, 250L));
+			dist1.setCurrentProgress(Math.min(distance, 10L));
+			dist2.setCurrentProgress(Math.min(distance, 50L));
+			dist3.setCurrentProgress(Math.min(distance, 250L));
 
 			dist1.setComplete(dist1.getCurrentProgress() == 10L);
 			dist2.setComplete(dist2.getCurrentProgress() == 50L);
@@ -85,9 +85,9 @@ public class AchievementInfoService {
 			AchievementProgress time5 = progressMap.getOrDefault(5, new AchievementProgress());
 			AchievementProgress time6 = progressMap.getOrDefault(6, new AchievementProgress());
 
-			time4.setCurrentProgress(Math.max(time, 1L));
-			time5.setCurrentProgress(Math.max(time, 10L));
-			time6.setCurrentProgress(Math.max(time, 100L));
+			time4.setCurrentProgress(Math.min(time, 1L));
+			time5.setCurrentProgress(Math.min(time, 10L));
+			time6.setCurrentProgress(Math.min(time, 100L));
 
 			time4.setComplete(time4.getCurrentProgress() == 1L);
 			time5.setComplete(time5.getCurrentProgress() == 10L);
@@ -104,9 +104,9 @@ public class AchievementInfoService {
 			AchievementProgress strk8 = progressMap.getOrDefault(8, new AchievementProgress());
 			AchievementProgress strk9 = progressMap.getOrDefault(9, new AchievementProgress());
 
-			strk7.setCurrentProgress(Math.max(streak, 5L));
-			strk8.setCurrentProgress(Math.max(streak, 20L));
-			strk9.setCurrentProgress(Math.max(streak, 50L));
+			strk7.setCurrentProgress(Math.min(streak, 5L));
+			strk8.setCurrentProgress(Math.min(streak, 20L));
+			strk9.setCurrentProgress(Math.min(streak, 50L));
 
 			strk7.setComplete(strk7.getCurrentProgress() == 5L);
 			strk8.setComplete(strk8.getCurrentProgress() == 20L);
@@ -125,5 +125,7 @@ public class AchievementInfoService {
 			}
 			progressMap.put(10, all);
 		}
+
+		achievementInfoAccessor.setEntry(achievementInfo);
 	}
 }
