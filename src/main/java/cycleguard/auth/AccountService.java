@@ -2,6 +2,7 @@ package cycleguard.auth;
 
 import cycleguard.database.accessor.UserCredentialsAccessor;
 import cycleguard.database.accessor.UserCredentialsAccessor.HashedUserCredentials;
+import cycleguard.database.stats.UserStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ public class AccountService {
 
 	@Autowired
 	private UserCredentialsAccessor userCredentialsAccessor;
+
+	@Autowired
+	private UserStatsService userStatsService;
 
 	private HashedUserCredentials createHashedUser(AccountCredentials credentials) {
 		HashedUserCredentials hashedUserCredentials = new HashedUserCredentials();
@@ -28,6 +32,8 @@ public class AccountService {
 		System.out.println(passwordEncoder.encode(credentials.getPassword()));
 		HashedUserCredentials hashedUserCredentials = createHashedUser(credentials);
 		userCredentialsAccessor.setEntry(hashedUserCredentials);
+
+		userStatsService.createUser(credentials.getUsername());
 	}
 
 	public boolean isValidLogin(AccountCredentials accountCredentials) {

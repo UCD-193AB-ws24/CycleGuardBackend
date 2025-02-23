@@ -23,4 +23,7 @@ public class AchievementInfoService {
 		AchievementInfo achievementInfo = achievementInfoAccessor.getEntryOrDefaultBlank(username);
 		return achievementInfo;
 	}
+	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo) {
+
+	}
 }

@@ -27,8 +27,17 @@ public final class AchievementInfo extends AbstractDatabaseUserEntry {
 	}
 
 	@DynamoDbBean
-	public static final class AchievementProgress implements Comparable<AchievementProgress> {
-		private long currentProgress, goalProgress;
+	public static final class AchievementProgress {
+		private long currentProgress;
+		private boolean complete;
+
+		public boolean isComplete() {
+			return complete;
+		}
+
+		public void setComplete(boolean complete) {
+			this.complete = complete;
+		}
 
 		public long getCurrentProgress() {
 			return currentProgress;
@@ -36,21 +45,6 @@ public final class AchievementInfo extends AbstractDatabaseUserEntry {
 
 		public void setCurrentProgress(long currentProgress) {
 			this.currentProgress = currentProgress;
-		}
-
-		public long getGoalProgress() {
-			return goalProgress;
-		}
-
-		public void setGoalProgress(long goalProgress) {
-			this.goalProgress = goalProgress;
-		}
-
-		@Override
-		public int compareTo(AchievementProgress o) {
-			long progress = currentProgress * o.goalProgress;
-			long oProgress = o.currentProgress * goalProgress;
-			return (int)(progress - oProgress);
 		}
 	}
 }

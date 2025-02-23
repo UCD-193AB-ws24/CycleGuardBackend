@@ -6,6 +6,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static cycleguard.util.StringDoubles.fromDouble;
+import static cycleguard.util.StringDoubles.toDouble;
+
 /**
  * {@link DynamoDbBean} linking a username to that user's week history.
  *
@@ -29,12 +32,6 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 
 	@DynamoDbBean
 	public static final class DayHistory {
-		private static double toDouble(String s) {
-			return Double.parseDouble(s);
-		}
-		private static String fromDouble(double d) {
-			return String.format("%.1f", d);
-		}
 		public DayHistory() {}
 		public DayHistory(ProcessRideService.RideInfo rideInfo) {
 			distance = fromDouble(rideInfo.distance);

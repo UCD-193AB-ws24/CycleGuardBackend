@@ -2,8 +2,10 @@ package cycleguard.rest.rides;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
+import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.rides.ProcessRideService.RideInfo;
+import cycleguard.database.stats.UserStatsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,10 @@ public final class AddRideInfo {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private ProcessRideService processRideService;
+	@Autowired
+	private UserStatsService userStatsService;
+	@Autowired
+	private AchievementInfoService achievementInfoService;
 
 	@PostMapping("/rides/addRide")
 	public String getHealthInfo(@RequestHeader("Token") String token, HttpServletResponse response,
@@ -29,6 +35,8 @@ public final class AddRideInfo {
 		}
 
 		processRideService.processNewRide(username, rideInfo);
+		userStatsService.processNewRide(username, rideInfo);
+		achievementInfoService.processNewRide(username, rideInfo);
 
 		return "OK";
 	}
