@@ -17,7 +17,9 @@ public class UserStatsService {
 	private UserStatsAccessor userStatsAccessor;
 
 	public UserStats getUserStats(String username) {
-		return userStatsAccessor.getEntryOrDefaultBlank(username);
+		UserStats entry = userStatsAccessor.getEntry(username);
+		if (entry == null) createUser(username);
+		return entry;
 	}
 
 	public void createUser(String username) {
