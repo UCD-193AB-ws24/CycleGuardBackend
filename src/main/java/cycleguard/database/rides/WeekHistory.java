@@ -1,7 +1,6 @@
 package cycleguard.database.rides;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
-import cycleguard.database.service.ProcessRideService;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Map;
@@ -69,8 +68,6 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 		}
 
 		public void addDistance(String distance) {
-			System.out.println(this.distance);
-			System.out.println(distance);
 			this.distance = fromDouble(toDouble(this.distance) + toDouble(distance));
 		}
 

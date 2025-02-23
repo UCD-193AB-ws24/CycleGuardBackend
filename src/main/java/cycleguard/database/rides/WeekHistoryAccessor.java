@@ -1,5 +1,6 @@
-package cycleguard.database.accessor;
+package cycleguard.database.rides;
 
+import cycleguard.database.accessor.AbstractDatabaseAccessor;
 import cycleguard.database.rides.WeekHistory;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;

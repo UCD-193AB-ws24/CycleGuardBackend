@@ -1,9 +1,9 @@
-package cycleguard.rest.rides;
+package cycleguard.rest.Achievements;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.rides.WeekHistoryService;
 import cycleguard.database.rides.WeekHistory;
+import cycleguard.database.rides.WeekHistoryService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Requires {@link HealthInfo} as body.
  */
 @RestController
-public final class GetWeekHistory {
+public final class GetAchievementInfo {
 	@Autowired
 	private AccessTokenManager accessTokenManager;
 	@Autowired

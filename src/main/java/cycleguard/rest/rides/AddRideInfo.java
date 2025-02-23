@@ -2,10 +2,8 @@ package cycleguard.rest.rides;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.accessor.WeekHistoryService;
-import cycleguard.database.rides.WeekHistory;
-import cycleguard.database.service.ProcessRideService;
-import cycleguard.database.service.ProcessRideService.RideInfo;
+import cycleguard.database.rides.ProcessRideService;
+import cycleguard.database.rides.ProcessRideService.RideInfo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

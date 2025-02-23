@@ -1,6 +1,6 @@
-package cycleguard.database.service;
+package cycleguard.database.rides;
 
-import cycleguard.database.accessor.WeekHistoryService;
+import cycleguard.database.rides.WeekHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

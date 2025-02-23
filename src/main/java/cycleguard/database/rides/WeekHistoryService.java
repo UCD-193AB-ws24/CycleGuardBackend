@@ -1,9 +1,7 @@
-package cycleguard.database.accessor;
+package cycleguard.database.rides;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.rides.WeekHistory;
 import cycleguard.database.rides.WeekHistory.DayHistory;
-import cycleguard.database.service.ProcessRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +52,7 @@ public class WeekHistoryService {
 		weekHistoryAccessor.setEntry(weekHistory);
 	}
 
-	public void removeOlderHistories(WeekHistory weekHistory, Instant now) {
+	private void removeOlderHistories(WeekHistory weekHistory, Instant now) {
 		Map<Long, DayHistory> dayHistoryMap = weekHistory.getDayHistoryMap();
 		dayHistoryMap.entrySet().removeIf(e -> getDaysBetweenTimeAndNow(e.getKey(), now.getEpochSecond()) >= HISTORY_LENGTH);
 	}
