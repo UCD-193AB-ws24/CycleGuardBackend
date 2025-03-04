@@ -20,4 +20,8 @@ public class TimeUtil {
 		Instant truncated = ChronoUnit.DAYS.addTo(Instant.EPOCH, daysSinceEpoch);
 		return truncated.getEpochSecond();
 	}
+
+	public static long getCurrentSecond(Instant now) {
+		return now.getEpochSecond();
+	}
 }

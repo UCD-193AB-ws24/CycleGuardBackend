@@ -30,6 +30,7 @@ public final class AddRideInfo {
 			return "UNAUTHORIZED";
 		}
 
+//		System.out.println(rideInfo);
 		processRideService.processNewRide(username, rideInfo);
 
 		return "OK";

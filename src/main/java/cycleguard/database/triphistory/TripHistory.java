@@ -17,13 +17,12 @@ import java.util.TreeMap;
  */
 @DynamoDbBean
 public final class TripHistory extends AbstractDatabaseUserEntry {
-	private Map<Long, SingleRideHistory> tripHistoryMap = new TreeMap<>();
-
-	public Map<Long, SingleRideHistory> getTripHistoryMap() {
-		return tripHistoryMap;
+	private Map<Long, SingleRideHistory> timestampTripHistoryMap = new TreeMap<>();
+	public Map<Long, SingleRideHistory> getTimestampTripHistoryMap() {
+		return timestampTripHistoryMap;
 	}
 
-	public void setTripHistoryMap(Map<Long, SingleRideHistory> tripHistoryMap) {
-		this.tripHistoryMap = tripHistoryMap;
+	public void setTimestampTripHistoryMap(Map<Long, SingleRideHistory> timestampTripHistoryMap) {
+		this.timestampTripHistoryMap = timestampTripHistoryMap;
 	}
 }
