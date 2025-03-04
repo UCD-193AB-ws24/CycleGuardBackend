@@ -2,8 +2,6 @@ package cycleguard.rest.user;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.rides.WeekHistory;
-import cycleguard.database.rides.WeekHistoryService;
 import cycleguard.database.stats.UserStats;
 import cycleguard.database.stats.UserStatsService;
 import jakarta.servlet.http.HttpServletResponse;

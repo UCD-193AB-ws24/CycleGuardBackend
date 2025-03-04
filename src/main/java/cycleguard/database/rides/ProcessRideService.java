@@ -1,16 +1,27 @@
 package cycleguard.database.rides;
 
-import cycleguard.database.rides.WeekHistoryService;
+import cycleguard.database.achievements.AchievementInfoService;
+import cycleguard.database.stats.UserStatsService;
+import cycleguard.database.weekhistory.WeekHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 
 @Service
 public class ProcessRideService {
 	@Autowired
 	private WeekHistoryService weekHistoryService;
+	@Autowired
+	private UserStatsService userStatsService;
+	@Autowired
+	private AchievementInfoService achievementInfoService;
 
 	public void processNewRide(String username, RideInfo rideInfo) {
-		weekHistoryService.addDayHistory(username, rideInfo);
+		Instant now = Instant.now();
+		weekHistoryService.addDayHistory(username, rideInfo, now);
+		userStatsService.processNewRide(username, rideInfo, now);
+		achievementInfoService.processNewRide(username, rideInfo, now);
 	}
 
 	public static final class RideInfo {

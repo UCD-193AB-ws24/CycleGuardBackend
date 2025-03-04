@@ -20,10 +20,6 @@ public final class AddRideInfo {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private ProcessRideService processRideService;
-	@Autowired
-	private UserStatsService userStatsService;
-	@Autowired
-	private AchievementInfoService achievementInfoService;
 
 	@PostMapping("/rides/addRide")
 	public String getHealthInfo(@RequestHeader("Token") String token, HttpServletResponse response,
@@ -35,8 +31,6 @@ public final class AddRideInfo {
 		}
 
 		processRideService.processNewRide(username, rideInfo);
-		userStatsService.processNewRide(username, rideInfo);
-		achievementInfoService.processNewRide(username, rideInfo);
 
 		return "OK";
 	}

@@ -1,6 +1,7 @@
-package cycleguard.database.rides;
+package cycleguard.database.weekhistory;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
+import cycleguard.database.rides.ProcessRideService;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Map;
@@ -19,21 +20,21 @@ import static cycleguard.util.StringDoubles.toDouble;
  */
 @DynamoDbBean
 public final class WeekHistory extends AbstractDatabaseUserEntry {
-	private Map<Long, DayHistory> dayHistoryMap = new TreeMap<>();
+	private Map<Long, SingleRideHistory> dayHistoryMap = new TreeMap<>();
 
-	public Map<Long, DayHistory> getDayHistoryMap() {
+	public Map<Long, SingleRideHistory> getDayHistoryMap() {
 		return dayHistoryMap;
 	}
 
-	public void setDayHistoryMap(Map<Long, DayHistory> dayHistoryMap) {
+	public void setDayHistoryMap(Map<Long, SingleRideHistory> dayHistoryMap) {
 		this.dayHistoryMap = dayHistoryMap;
 	}
 
 
 	@DynamoDbBean
-	public static final class DayHistory {
-		public DayHistory() {}
-		public DayHistory(ProcessRideService.RideInfo rideInfo) {
+	public static final class SingleRideHistory {
+		public SingleRideHistory() {}
+		public SingleRideHistory(ProcessRideService.RideInfo rideInfo) {
 			distance = fromDouble(rideInfo.distance);
 			calories = fromDouble(rideInfo.calories);
 			time = fromDouble(rideInfo.time);

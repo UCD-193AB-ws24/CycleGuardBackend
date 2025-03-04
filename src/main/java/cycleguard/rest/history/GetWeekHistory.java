@@ -2,8 +2,8 @@ package cycleguard.rest.history;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.rides.WeekHistoryService;
-import cycleguard.database.rides.WeekHistory;
+import cycleguard.database.weekhistory.WeekHistoryService;
+import cycleguard.database.weekhistory.WeekHistory;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

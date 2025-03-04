@@ -1,11 +1,8 @@
 package cycleguard.database.achievements;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.accessor.UserInfoAccessor;
 import cycleguard.database.achievements.AchievementInfo.AchievementProgress;
 import cycleguard.database.rides.ProcessRideService;
-import cycleguard.database.rides.WeekHistory;
-import cycleguard.database.rides.WeekHistory.DayHistory;
 import cycleguard.database.stats.UserStats;
 import cycleguard.database.stats.UserStatsService;
 import cycleguard.util.StringDoubles;
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 @Service
@@ -44,7 +40,7 @@ public class AchievementInfoService {
 	9: 50 day streak
 	10: Get all achievements
 	 */
-	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo) {
+	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
 		AchievementInfo achievementInfo = achievementInfoAccessor.getEntryOrDefaultBlank(username);
 		UserStats userStats = userStatsService.getUserStats(username);
 
