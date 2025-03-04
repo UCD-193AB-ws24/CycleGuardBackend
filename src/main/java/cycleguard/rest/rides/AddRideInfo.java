@@ -6,6 +6,8 @@ import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.rides.ProcessRideService.RideInfo;
 import cycleguard.database.stats.UserStatsService;
+import cycleguard.util.StringDoubles;
+import cycleguard.util.TimeUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,8 @@ public final class AddRideInfo {
 		}
 
 //		System.out.println(rideInfo);
-		processRideService.processNewRide(username, rideInfo);
+		long timestamp = processRideService.processNewRide(username, rideInfo);
 
-		return "OK";
+		return Long.toString(timestamp);
 	}
 }

@@ -4,8 +4,6 @@ import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.triphistory.TripHistory;
 import cycleguard.database.triphistory.TripHistoryService;
-import cycleguard.database.weekhistory.WeekHistory;
-import cycleguard.database.weekhistory.WeekHistoryService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

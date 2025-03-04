@@ -1,11 +1,11 @@
 package cycleguard.database.rides;
 
-import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.stats.UserStatsService;
-import cycleguard.database.triphistory.TripHistory;
+import cycleguard.database.tripcoordinates.TripCoordinatesService;
 import cycleguard.database.triphistory.TripHistoryService;
 import cycleguard.database.weekhistory.WeekHistoryService;
+import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +24,18 @@ public class ProcessRideService {
 	@Autowired
 	private TripHistoryService tripHistoryService;
 
-	public void processNewRide(String username, RideInfo rideInfo) {
+	@Autowired
+	private TripCoordinatesService tripCoordinatesService;
+
+	public long processNewRide(String username, RideInfo rideInfo) {
 		Instant now = Instant.now();
 		weekHistoryService.addDayHistory(username, rideInfo, now);
 		userStatsService.processNewRide(username, rideInfo, now);
 		achievementInfoService.processNewRide(username, rideInfo, now);
 		tripHistoryService.processNewRide(username, rideInfo, now);
+		tripCoordinatesService.processNewRide(username, rideInfo, now);
+
+		return TimeUtil.getCurrentSecond(now);
 	}
 
 	public static final class RideInfo {
