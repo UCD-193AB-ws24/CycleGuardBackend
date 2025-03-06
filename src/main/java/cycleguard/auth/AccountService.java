@@ -29,7 +29,6 @@ public class AccountService {
 	}
 
 	public void createAccount(AccountCredentials credentials) {
-		System.out.println(passwordEncoder.encode(credentials.getPassword()));
 		HashedUserCredentials hashedUserCredentials = createHashedUser(credentials);
 		userCredentialsAccessor.setEntry(hashedUserCredentials);
 

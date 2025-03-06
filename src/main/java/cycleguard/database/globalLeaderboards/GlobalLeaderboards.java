@@ -20,10 +20,10 @@ import java.util.List;
  */
 @DynamoDbBean
 public final class GlobalLeaderboards extends AbstractDatabaseEntry {
-	private String leaderboardName;
-	private List<String> leaderboards = new ArrayList<>();
+	private String leaderboardName="";
+	private List<LeaderboardEntry> entries = new ArrayList<>();
 
-
+	@DynamoDbPartitionKey
 	public String getLeaderboardName() {
 		return leaderboardName;
 	}
@@ -32,12 +32,12 @@ public final class GlobalLeaderboards extends AbstractDatabaseEntry {
 		this.leaderboardName = leaderboardName;
 	}
 
-	public List<String> getLeaderboards() {
-		return leaderboards;
+	public List<LeaderboardEntry> getEntries() {
+		return entries;
 	}
 
-	public void setLeaderboards(List<String> leaderboards) {
-		this.leaderboards = leaderboards;
+	public void setEntries(List<LeaderboardEntry> entries) {
+		this.entries = entries;
 	}
 
 	@Override
