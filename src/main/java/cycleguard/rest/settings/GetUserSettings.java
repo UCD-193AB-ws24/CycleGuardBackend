@@ -32,6 +32,6 @@ public final class GetUserSettings {
 			return null;
 		}
 
-		return userSettingsAccessor.getEntry(username);
+		return userSettingsAccessor.getEntryOrDefaultBlank(username);
 	}
 }

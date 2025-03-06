@@ -29,7 +29,7 @@ public final class GetPublicProfile {
 	                              @NonNull @PathVariable("username") String username) {
 		String curUsername = accessTokenManager.getUsernameFromToken(token);
 
-		UserProfile profile = userProfileAccessor.getEntry(username);
+		UserProfile profile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (!profile.getIsPublic() && !username.equals(curUsername)) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return null;

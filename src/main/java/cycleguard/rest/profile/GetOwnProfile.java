@@ -31,6 +31,6 @@ public final class GetOwnProfile {
 			return null;
 		}
 
-		return userProfileAccessor.getEntry(username);
+		return userProfileAccessor.getEntryOrDefaultBlank(username);
 	}
 }
