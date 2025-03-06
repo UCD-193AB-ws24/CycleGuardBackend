@@ -38,8 +38,8 @@ public class UserSettingsAccessor extends AbstractDatabaseAccessor<UserSettings>
 	 */
 	@DynamoDbBean
 	public static final class UserSettings extends AbstractDatabaseUserEntry {
-		private boolean darkModeEnabled;
-		private String currentTheme;
+		private boolean darkModeEnabled=false;
+		private String currentTheme = "orange";
 
 		public boolean isDarkModeEnabled() {
 			return darkModeEnabled;
