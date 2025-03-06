@@ -1,9 +1,8 @@
-package cycleguard.database.triphistory;
+package cycleguard.database.tripHistory;
 
 import cycleguard.database.SingleRideHistory;
 import cycleguard.database.rides.ProcessRideService;
-import cycleguard.database.tripcoordinates.TripCoordinates;
-import cycleguard.database.tripcoordinates.TripCoordinatesService;
+import cycleguard.database.tripCoordinates.TripCoordinatesService;
 import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

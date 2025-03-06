@@ -1,4 +1,4 @@
-package cycleguard.database.triphistory;
+package cycleguard.database.tripHistory;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
 import cycleguard.database.SingleRideHistory;

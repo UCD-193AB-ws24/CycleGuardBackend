@@ -2,9 +2,9 @@ package cycleguard.database.rides;
 
 import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.stats.UserStatsService;
-import cycleguard.database.tripcoordinates.TripCoordinatesService;
-import cycleguard.database.triphistory.TripHistoryService;
-import cycleguard.database.weekhistory.WeekHistoryService;
+import cycleguard.database.tripCoordinates.TripCoordinatesService;
+import cycleguard.database.tripHistory.TripHistoryService;
+import cycleguard.database.weekHistory.WeekHistoryService;
 import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

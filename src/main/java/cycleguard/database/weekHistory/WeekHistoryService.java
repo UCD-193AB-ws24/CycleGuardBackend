@@ -1,8 +1,8 @@
-package cycleguard.database.weekhistory;
+package cycleguard.database.weekHistory;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.rides.ProcessRideService;
-import cycleguard.database.weekhistory.WeekHistory.SingleRideHistory;
+import cycleguard.database.weekHistory.WeekHistory.SingleRideHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

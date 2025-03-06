@@ -1,4 +1,4 @@
-package cycleguard.database.weekhistory;
+package cycleguard.database.weekHistory;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
 import cycleguard.database.rides.ProcessRideService;

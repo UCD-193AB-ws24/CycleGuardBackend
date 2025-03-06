@@ -2,10 +2,8 @@ package cycleguard.rest.history;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.tripcoordinates.TripCoordinates;
-import cycleguard.database.tripcoordinates.TripCoordinatesService;
-import cycleguard.database.triphistory.TripHistory;
-import cycleguard.database.triphistory.TripHistoryService;
+import cycleguard.database.tripCoordinates.TripCoordinates;
+import cycleguard.database.tripCoordinates.TripCoordinatesService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;

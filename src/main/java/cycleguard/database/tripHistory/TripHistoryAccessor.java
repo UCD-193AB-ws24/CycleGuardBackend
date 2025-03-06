@@ -1,4 +1,4 @@
-package cycleguard.database.triphistory;
+package cycleguard.database.tripHistory;
 
 import cycleguard.database.accessor.AbstractDatabaseAccessor;
 import org.springframework.context.annotation.Configuration;

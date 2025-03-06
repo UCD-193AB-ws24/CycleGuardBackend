@@ -1,15 +1,11 @@
-package cycleguard.database.tripcoordinates;
+package cycleguard.database.tripCoordinates;
 
 import cycleguard.database.AbstractDatabaseEntry;
-import cycleguard.database.AbstractDatabaseUserEntry;
-import cycleguard.database.SingleRideHistory;
 import cycleguard.database.rides.ProcessRideService;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * {@link DynamoDbBean} linking a username to that user's week history.

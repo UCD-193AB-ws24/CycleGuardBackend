@@ -1,15 +1,11 @@
-package cycleguard.database.tripcoordinates;
+package cycleguard.database.tripCoordinates;
 
-import cycleguard.database.SingleRideHistory;
 import cycleguard.database.rides.ProcessRideService;
-import cycleguard.database.triphistory.TripHistory;
 import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class TripCoordinatesService {
