@@ -4,6 +4,7 @@ import cycleguard.auth.AccessTokenManager;
 import cycleguard.auth.AccountService;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.friendsList.FriendRequestService;
+import cycleguard.database.friendsList.FriendsListService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -17,16 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
  * Requires {@link HealthInfo} as body.
  */
 @RestController
-public final class DeclineFriendRequest {
+public final class RemoveFriend {
 	@Autowired
 	private AccessTokenManager accessTokenManager;
 	@Autowired
-	private FriendRequestService friendRequestService;
-	@Autowired
-	private AccountService accountService;
+	private FriendsListService friendsListService;
 
-	@PostMapping("/friends/declineFriendRequest")
-	public String declineFriendRequest(@RequestHeader("Token") String token, HttpServletResponse response,
+	@PostMapping("/friends/removeFriend")
+	public String removeFriend(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull SingleUsername singleUsername) {
 		String username = accessTokenManager.getUsernameFromToken(token);
 		if (username == null) {
@@ -37,14 +36,11 @@ public final class DeclineFriendRequest {
 		String friendUsername = singleUsername.username;
 		if (username.equals(friendUsername)) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return "CANNOT SEND SELF FRIEND REQUEST";
-		}
-		if (!accountService.accountExists(friendUsername)) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return "NO EXISTING ACCOUNT";
+			return "CANNOT REMOVE SELF";
 		}
 
-		friendRequestService.declineFriendRequest(username, friendUsername);
+
+		friendsListService.removeFriend(username, friendUsername);
 		return "OK";
 	}
 }

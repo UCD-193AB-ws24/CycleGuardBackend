@@ -35,6 +35,10 @@ public final class CancelFriendRequest {
 		}
 
 		String friendUsername = singleUsername.username;
+		if (username.equals(friendUsername)) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return "CANNOT SEND SELF FRIEND REQUEST";
+		}
 		if (!accountService.accountExists(friendUsername)) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return "NO EXISTING ACCOUNT";
