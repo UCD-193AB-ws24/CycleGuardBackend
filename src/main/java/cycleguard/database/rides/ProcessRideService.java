@@ -31,7 +31,7 @@ public class ProcessRideService {
 
 	public long processNewRide(String username, RideInfo rideInfo) {
 		Instant now = Instant.now();
-		weekHistoryService.addDayHistory(username, rideInfo, now);
+		weekHistoryService.processNewRide(username, rideInfo, now);
 		userStatsService.processNewRide(username, rideInfo, now);
 		achievementInfoService.processNewRide(username, rideInfo, now);
 		tripHistoryService.processNewRide(username, rideInfo, now);

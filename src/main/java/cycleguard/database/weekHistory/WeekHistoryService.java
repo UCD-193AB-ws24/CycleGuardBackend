@@ -23,7 +23,7 @@ public class WeekHistoryService {
 	private AccessTokenManager accessTokenManager;
 
 	public WeekHistory getWeekHistory(String username) {
-		Instant now = Instant.now();
+		Instant now = TimeUtil.getAdjustedInstant(Instant.now());
 		WeekHistory weekHistory = weekHistoryAccessor.getEntryOrDefaultBlank(username);
 
 		int startSize = weekHistory.getDayHistoryMap().size();
@@ -36,7 +36,7 @@ public class WeekHistoryService {
 		return weekHistory;
 	}
 
-	public void addDayHistory(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
+	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
 		now = TimeUtil.getAdjustedInstant(now);
 
 		SingleRideHistory singleRideHistory = new SingleRideHistory(rideInfo);
