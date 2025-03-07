@@ -18,6 +18,9 @@ public class AccountService {
 	@Autowired
 	private UserStatsService userStatsService;
 
+	public boolean accountExists(String username) {
+		return userCredentialsAccessor.hasEntry(username);
+	}
 	private HashedUserCredentials createHashedUser(AccountCredentials credentials) {
 		HashedUserCredentials hashedUserCredentials = new HashedUserCredentials();
 		String hashedPassword = passwordEncoder.encode(credentials.getPassword());

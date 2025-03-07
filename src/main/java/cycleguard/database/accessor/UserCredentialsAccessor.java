@@ -9,7 +9,6 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @Configuration
 public class UserCredentialsAccessor extends AbstractDatabaseAccessor<UserCredentialsAccessor.HashedUserCredentials> {
 	private final DynamoDbTable<HashedUserCredentials> tableInstance;
-
 	protected UserCredentialsAccessor() {
 		tableInstance = getClient().table("CycleGuard-UserCredentials", TableSchema.fromBean(HashedUserCredentials.class));
 	}

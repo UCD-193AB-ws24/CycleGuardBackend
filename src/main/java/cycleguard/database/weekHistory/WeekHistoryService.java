@@ -3,6 +3,7 @@ package cycleguard.database.weekHistory;
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.weekHistory.WeekHistory.SingleRideHistory;
+import cycleguard.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,8 @@ public class WeekHistoryService {
 	}
 
 	public void addDayHistory(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
+		now = TimeUtil.getAdjustedInstant(now);
+
 		SingleRideHistory singleRideHistory = new SingleRideHistory(rideInfo);
 
 		WeekHistory weekHistory = weekHistoryAccessor.getEntryOrDefaultBlank(username);

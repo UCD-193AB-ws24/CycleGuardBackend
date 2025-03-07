@@ -13,6 +13,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+import java.util.List;
+
 /**
  * Wrapper for DynamoDB database access.
  * Subclasses must implement <code>getTableInstance</code> to return a singleton instance of the DynamoDB table, along with
@@ -126,4 +128,11 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * @return Singleton instance of the {@link DynamoDbTable}
 	 */
 	protected abstract DynamoDbTable<EntryType> getTableInstance();
+
+	public List<EntryType> batchGetItem() {
+
+//		client.batchGetItem()
+//		getTableInstance().
+		return null;
+	}
 }

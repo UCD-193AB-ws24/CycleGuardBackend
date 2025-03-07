@@ -26,6 +26,8 @@ public class UserStatsService {
 		return userStats;
 	}
 	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
+		now = TimeUtil.getAdjustedInstant(now);
+
 		UserStats stats = getUserStats(username);
 
 		stats.setTotalDistance(fromDouble(toDouble(stats.getTotalDistance()) + rideInfo.distance));

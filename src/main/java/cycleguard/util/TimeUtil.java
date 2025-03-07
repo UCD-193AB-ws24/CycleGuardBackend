@@ -10,6 +10,8 @@ public class TimeUtil {
 		return ChronoUnit.DAYS.between(start, end);
 	}
 
+
+
 	public static long getCurrentDayTime() {
 		return getCurrentDayTime(Instant.now());
 	}
@@ -23,5 +25,10 @@ public class TimeUtil {
 
 	public static long getCurrentSecond(Instant now) {
 		return now.getEpochSecond();
+	}
+
+	public static Instant getAdjustedInstant(Instant now) {
+		Instant res = ChronoUnit.HOURS.addTo(now, 8);
+		return res;
 	}
 }
