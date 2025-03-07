@@ -28,7 +28,7 @@ public class TimeUtil {
 	}
 
 	public static Instant getAdjustedInstant(Instant now) {
-		Instant res = ChronoUnit.HOURS.addTo(now, 8);
+		Instant res = ChronoUnit.HOURS.addTo(now, 16);
 		return res;
 	}
 }
