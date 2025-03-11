@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private final UserProfileAccessor userProfileAccessor;
 
@@ -15,7 +16,7 @@ public class UserController {
     }
 
     // API to fetch all users
-    @GetMapping("/users/all")
+    @GetMapping("/all")
     public List<UserProfile> getAllUsers() {
         return userProfileAccessor.getAllUsers();
     }
