@@ -1,5 +1,6 @@
 package cycleguard.database.accessor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,17 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	}
 
 	public List<UserProfile> getAllUsers() {
-		// Perform a scan operation on the DynamoDB table
-		List<UserProfile> users = tableInstance.scan(ScanEnhancedRequest.builder().build())
-			.items()
-			.stream()
-			.collect(Collectors.toList());
+		try {
+			// Perform a scan operation on the DynamoDB table
+			return tableInstance.scan(ScanEnhancedRequest.builder().build())
+				.items()
+				.stream()
+				.collect(Collectors.toList());
 
-		return users;
+		} catch (Exception e) {
+			System.err.println("Error fetching users from DynamoDB: " + e.getMessage());
+			return Collections.emptyList(); // Return empty list in case of failure
+		}
 	}
 
 	/**
