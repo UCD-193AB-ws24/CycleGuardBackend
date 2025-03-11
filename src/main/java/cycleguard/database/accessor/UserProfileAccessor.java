@@ -1,13 +1,16 @@
 package cycleguard.database.accessor;
 
-import cycleguard.database.AbstractDatabaseUserEntry;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.context.annotation.Configuration;
+
+import cycleguard.database.AbstractDatabaseUserEntry;
+import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-
-import static cycleguard.database.accessor.UserProfileAccessor.*;
-import static cycleguard.database.accessor.UserSettingsAccessor.UserSettings;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 
 @Configuration
 public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
@@ -27,6 +30,15 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 		return new UserProfile();
 	}
 
+	public List<UserProfile> getAllUsers() {
+		// Perform a scan operation on the DynamoDB table
+		List<UserProfile> users = tableInstance.scan(ScanEnhancedRequest.builder().build())
+			.items()
+			.stream()
+			.collect(Collectors.toList());
+
+		return users;
+	}
 
 	/**
 	 * {@link DynamoDbBean} linking a username to that user's profile.
