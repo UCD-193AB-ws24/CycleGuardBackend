@@ -1,4 +1,4 @@
-package cycleguard;
+package cycleguard.rest.user;
 
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
