@@ -4,9 +4,11 @@ import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +24,25 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<UserProfile> getAllUsers(@RequestHeader("Token") String token, HttpServletResponse response) {
+    public UserProfileList getAllUsers(@RequestHeader("Token") String token, HttpServletResponse response) {
         String username = accessTokenManager.getUsernameFromToken(token);
         if (username == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return null;
         }
 
-        return userProfileAccessor.getAllUsers();
+        return new UserProfileList(username, userProfileAccessor.getAllUsers());
     }
+}
+
+class UserProfileList {
+    public UserProfileList() {};
+
+    public UserProfileList(String username, List<UserProfile> users) {
+        this.username = username;
+        this.users = users;
+    }
+
+    public String username = "";
+    public List<UserProfile> users = new ArrayList<>();
 }
