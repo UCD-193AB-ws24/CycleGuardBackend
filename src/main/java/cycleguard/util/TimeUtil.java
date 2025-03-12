@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 public class TimeUtil {
+	private static final int HOUR_OFFSET = -7;
 	public static long getDaysBetweenTimeAndNow(long startSeconds, long endSeconds) {
 		Instant start = Instant.ofEpochSecond(startSeconds);
 		Instant end = Instant.ofEpochSecond(endSeconds);
@@ -28,7 +29,7 @@ public class TimeUtil {
 	}
 
 	public static Instant getAdjustedInstant(Instant now) {
-		Instant res = ChronoUnit.HOURS.addTo(now, -8);
+		Instant res = ChronoUnit.HOURS.addTo(now, HOUR_OFFSET);
 		return res;
 	}
 }
