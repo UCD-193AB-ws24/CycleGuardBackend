@@ -3,6 +3,7 @@ package cycleguard.rest.purchases;
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.auth.AccountCredentials;
 import cycleguard.database.accessor.PurchaseInfoAccessor;
+import cycleguard.database.achievements.AchievementInfoService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -20,6 +21,8 @@ public final class Buy {
 	private PurchaseInfoAccessor purchaseInfoAccessor;
 	@Autowired
 	private ItemInfoService itemInfoService;
+	@Autowired
+	private AchievementInfoService achievementInfoService;
 
 	@PostMapping("/purchaseInfo/buy")
 	public String buy(@RequestHeader("Token") String token, HttpServletResponse response,
@@ -49,6 +52,8 @@ public final class Buy {
 		purchaseInfo.getThemesOwned().add(item);
 
 		purchaseInfoAccessor.setEntry(purchaseInfo);
+
+		achievementInfoService.processAchievements(username);
 
 
 		return "OK";
