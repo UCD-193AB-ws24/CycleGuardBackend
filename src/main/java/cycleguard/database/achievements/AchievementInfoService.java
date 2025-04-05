@@ -39,7 +39,7 @@ public class AchievementInfoService {
 
 		achievementProgress.setComplete(complete);
 		achievementProgress.setCurrentProgress(Math.min(progress, goal));
-		
+
 		progressMap.put(idx, achievementProgress);
 	}
 

@@ -37,6 +37,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 			return tableInstance.scan(ScanEnhancedRequest.builder().build())
 				.items()
 				.stream()
+				.filter(UserProfile::getIsPublic)
 				.collect(Collectors.toList());
 
 		} catch (Exception e) {

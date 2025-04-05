@@ -1,5 +1,7 @@
 package cycleguard.database.globalLeaderboards;
 
+import cycleguard.database.accessor.UserInfoAccessor;
+import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.stats.UserStats;
 import cycleguard.database.stats.UserStatsService;
@@ -16,6 +18,8 @@ public class GlobalLeaderboardsService {
 	private GlobalLeaderboardsAccessor globalLeaderboardsAccessor;
 	@Autowired
 	private UserStatsService userStatsService;
+	@Autowired
+	private UserProfileAccessor userProfileAccessor;
 
 	private GlobalLeaderboards distanceLeaderboards=null;
 	private GlobalLeaderboards timeLeaderboards=null;
@@ -27,11 +31,16 @@ public class GlobalLeaderboardsService {
 		if (timeLeaderboards==null) timeLeaderboards = globalLeaderboardsAccessor.getEntryOrDefaultBlank("time");
 		return timeLeaderboards;
 	}
-	private void updateEntry(GlobalLeaderboards leaderboard, LeaderboardEntry entry) {
+	private void updateEntry(GlobalLeaderboards leaderboard, LeaderboardEntry entry, boolean isPublic) {
 		List<LeaderboardEntry> entries = leaderboard.getEntries();
 		boolean found = false;
 		for (LeaderboardEntry curEntry : entries) {
 			if (curEntry.username.equals(entry.getUsername())) {
+				if (!isPublic) {
+					entries.remove(curEntry);
+					globalLeaderboardsAccessor.setEntry(leaderboard);
+					return;
+				}
 				curEntry.value = entry.value;
 				found = true;
 				break;
@@ -44,15 +53,20 @@ public class GlobalLeaderboardsService {
 
 		globalLeaderboardsAccessor.setEntry(leaderboard);
 	}
+
+
 	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
 		UserStats stats = userStatsService.getUserStats(username);
+
 		GlobalLeaderboards distanceLeaderboards = getDistanceLeaderboards();
 		GlobalLeaderboards timeLeaderboards = getTimeLeaderboards();
 
 		LeaderboardEntry distanceEntry = new LeaderboardEntry(username, stats.getTotalDistance());
 		LeaderboardEntry timeEntry = new LeaderboardEntry(username, stats.getTotalTime());
 
-		updateEntry(distanceLeaderboards, distanceEntry);
-		updateEntry(timeLeaderboards, timeEntry);
+		boolean isPublic = userProfileAccessor.getEntry(username).getIsPublic();
+
+		updateEntry(distanceLeaderboards, distanceEntry, isPublic);
+		updateEntry(timeLeaderboards, timeEntry, isPublic);
 	}
 }

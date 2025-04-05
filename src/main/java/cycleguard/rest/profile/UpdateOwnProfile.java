@@ -4,6 +4,7 @@ import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserSettingsAccessor;
+import cycleguard.database.globalLeaderboards.GlobalLeaderboardsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -25,6 +26,8 @@ public final class UpdateOwnProfile {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private UserProfileAccessor userProfileAccessor;
+	@Autowired
+	private GlobalLeaderboardsService globalLeaderboardsService;
 
 	@PostMapping("/profile/updateProfile")
 	public String updateProfile(@RequestHeader("Token") String token, HttpServletResponse response,
@@ -37,6 +40,8 @@ public final class UpdateOwnProfile {
 		userProfile.setUsername(username);
 
 		userProfileAccessor.setEntry(userProfile);
+
+		globalLeaderboardsService.processNewRide(username, null, null);
 		return "OK";
 	}
 }
