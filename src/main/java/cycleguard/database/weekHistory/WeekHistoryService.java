@@ -1,6 +1,7 @@
 package cycleguard.database.weekHistory;
 
 import cycleguard.auth.AccessTokenManager;
+import cycleguard.database.accessor.PurchaseInfoAccessor;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.weekHistory.WeekHistory.SingleRideHistory;
 import cycleguard.util.TimeUtil;
@@ -21,6 +22,8 @@ public class WeekHistoryService {
 
 	@Autowired
 	private AccessTokenManager accessTokenManager;
+	@Autowired
+	private PurchaseInfoAccessor purchaseInfoAccessor;
 
 	public WeekHistory getWeekHistory(String username) {
 		Instant now = TimeUtil.getAdjustedInstant(Instant.now());
@@ -51,6 +54,15 @@ public class WeekHistoryService {
 		singleRideHistory.addCalories(prev.getCalories());
 		singleRideHistory.addTime(prev.getTime());
 		singleRideHistory.addDistance(prev.getDistance());
+		singleRideHistory.setOverFiveMiles(prev.isOverFiveMiles());
+
+		if (singleRideHistory.getDistanceDouble() >= 5 && !singleRideHistory.isOverFiveMiles()) {
+			singleRideHistory.setOverFiveMiles(true);
+
+			var purchaseInfo = purchaseInfoAccessor.getEntryOrDefaultBlank(username);
+			purchaseInfo.setCycleCoins(purchaseInfo.getCycleCoins()+5);
+			purchaseInfoAccessor.setEntry(purchaseInfo);
+		}
 
 		dayHistoryMap.put(curDayTime, singleRideHistory);
 

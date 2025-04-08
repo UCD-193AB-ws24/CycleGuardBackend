@@ -41,14 +41,19 @@ public final class Buy {
 			return "ALREADY OWNED";
 		}
 
+		if (purchaseInfo.getCycleCoins() < 100 && item.equals("Rocket Boost")) {
+			response.setStatus(HttpServletResponse.SC_CONFLICT);
+			return "NOT ENOUGH COINS: NEED 100";
+		}
+
 		if (purchaseInfo.getCycleCoins() < 10) {
 			response.setStatus(HttpServletResponse.SC_CONFLICT);
 			return "NOT ENOUGH COINS: NEED 10";
 		}
 
 		// TODO Link with actual item prices
-
-		purchaseInfo.setCycleCoins(purchaseInfo.getCycleCoins()-10);
+		if (item.equals("Rocket Boost")) purchaseInfo.setCycleCoins(purchaseInfo.getCycleCoins()-100);
+		else purchaseInfo.setCycleCoins(purchaseInfo.getCycleCoins()-10);
 		purchaseInfo.getThemesOwned().add(item);
 
 		purchaseInfoAccessor.setEntry(purchaseInfo);

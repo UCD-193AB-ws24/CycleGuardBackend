@@ -2,6 +2,7 @@ package cycleguard.database.weekHistory;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
 import cycleguard.database.rides.ProcessRideService;
+import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Map;
@@ -40,6 +41,7 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 			time = fromDouble(rideInfo.time);
 		}
 		private String distance="0", calories="0", time="0";
+		private boolean overFiveMiles = false;
 
 		public String getDistance() {
 			return distance;
@@ -47,6 +49,9 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 
 		public void setDistance(String distance) {
 			this.distance = distance;
+		}
+		public void setDistance(double distance) {
+			this.distance = StringDoubles.fromDouble(distance);
 		}
 
 		public String getCalories() {
@@ -56,6 +61,9 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 		public void setCalories(String calories) {
 			this.calories = calories;
 		}
+		public void setCalories(double calories) {
+			this.calories = StringDoubles.fromDouble(calories);
+		}
 
 		public String getTime() {
 			return time;
@@ -63,6 +71,29 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 
 		public void setTime(String time) {
 			this.time = time;
+		}
+		public void setTime(double time) {
+			this.time = StringDoubles.fromDouble(time);
+		}
+
+		public boolean isOverFiveMiles() {
+			return overFiveMiles;
+		}
+
+		public void setOverFiveMiles(boolean overFiveMiles) {
+			this.overFiveMiles = overFiveMiles;
+		}
+
+		public double getDistanceDouble() {
+			return StringDoubles.toDouble(distance);
+		}
+
+		public double getTimeDouble() {
+			return StringDoubles.toDouble(time);
+		}
+
+		public double getCaloriesDouble() {
+			return StringDoubles.toDouble(calories);
 		}
 
 		public void addDistance(String distance) {
