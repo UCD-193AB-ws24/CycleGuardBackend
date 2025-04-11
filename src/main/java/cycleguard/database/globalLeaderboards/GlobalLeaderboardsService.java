@@ -1,6 +1,5 @@
 package cycleguard.database.globalLeaderboards;
 
-import cycleguard.database.accessor.UserInfoAccessor;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.stats.UserStats;
