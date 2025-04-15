@@ -1,6 +1,7 @@
 package cycleguard.database.packs;
 
 import cycleguard.database.AbstractDatabaseEntry;
+import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -20,7 +21,7 @@ public final class PackGoal {
 	private Map<String, String> contributionMap = new TreeMap<>();
 	private boolean active = false;
 	private String goalField="distance";
-	private long endTime, goalAmount;
+	private long startTime, endTime, goalAmount;
 
 	public Map<String, String> getContributionMap() {
 		return contributionMap;
@@ -36,6 +37,14 @@ public final class PackGoal {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 
 	public long getEndTime() {
@@ -60,5 +69,10 @@ public final class PackGoal {
 
 	public void setGoalAmount(long goalAmount) {
 		this.goalAmount = goalAmount;
+	}
+
+	public double getTotalContribution() {
+		return contributionMap.values().stream()
+				.mapToDouble(StringDoubles::toDouble).sum();
 	}
 }

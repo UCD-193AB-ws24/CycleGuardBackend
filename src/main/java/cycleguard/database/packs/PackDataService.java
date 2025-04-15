@@ -68,8 +68,11 @@ public class PackDataService implements RideProcessable {
 
 	public int joinPack(String username, String packName, String password) {
 		UserProfile userProfile = userProfileAccessor.getEntry(username);
-		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty())
+		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty()) {
+			if (userProfile.getPack().equals(packName)) return HttpServletResponse.SC_OK;
 			return HttpServletResponse.SC_CONFLICT;
+		}
+
 
 		PackData packData = packDataAccessor.getEntry(packName);
 		if (packData==null) return HttpServletResponse.SC_NOT_FOUND;
@@ -157,9 +160,24 @@ public class PackDataService implements RideProcessable {
 			return HttpServletResponse.SC_NOT_FOUND;
 
 		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
-		int res = packGoalService.setGoal(packData, durationSeconds, goalField, goalAmount);
+		if (!username.equals(packData.getOwner())) return HttpServletResponse.SC_UNAUTHORIZED;
 
+		int res = packGoalService.setGoal(packData, durationSeconds, goalField, goalAmount);
 		if (res == 200) packDataAccessor.setEntry(packData);
 		return res;
+	}
+
+	public int cancelCurrentGoal(String username) {
+		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
+			return HttpServletResponse.SC_NOT_FOUND;
+
+		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
+
+		if (!username.equals(packData.getOwner())) return HttpServletResponse.SC_UNAUTHORIZED;
+
+		packGoalService.clearGoal(packData);
+
+		return HttpServletResponse.SC_OK;
 	}
 }

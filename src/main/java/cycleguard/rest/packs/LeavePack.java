@@ -20,7 +20,7 @@ public final class LeavePack {
 	@Autowired
 	private PackDataService packDataService;
 
-	@PostMapping("/packs/leavePackAsOwner")
+	@PostMapping("/packs/leavePack")
 	public void leavePackAsOwner(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);
 		if (username == null) {

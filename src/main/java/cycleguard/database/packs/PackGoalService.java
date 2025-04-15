@@ -48,8 +48,24 @@ class PackGoalService {
 		packGoal.setActive(true);
 		packGoal.setGoalAmount(goalAmount);
 		packGoal.setGoalField(goalField);
-		packGoal.setEndTime(TimeUtil.getCurrentSecond() + durationSeconds);
+
+		long currentSecond = TimeUtil.getCurrentSecond();
+		packGoal.setStartTime(currentSecond);
+		packGoal.setEndTime(currentSecond + durationSeconds);
 
 		return HttpServletResponse.SC_OK;
+	}
+
+	void clearGoal(PackData packData) {
+		packData.setPackGoal(new PackGoal());
+
+//		PackGoal packGoal = packData.getPackGoal();
+//		packGoal.getContributionMap().clear();
+//		packGoal.setActive(false);
+//		packGoal.setGoalAmount(0);
+//		packGoal.setGoalField("");
+//
+//		packGoal.setStartTime(0);
+//		packGoal.setEndTime(0);
 	}
 }

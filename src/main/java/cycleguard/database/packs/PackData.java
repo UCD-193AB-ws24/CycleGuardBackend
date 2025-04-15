@@ -1,5 +1,6 @@
 package cycleguard.database.packs;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import cycleguard.database.AbstractDatabaseEntry;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
@@ -15,6 +16,7 @@ import java.util.List;
  *     <li></li>
  * </ul>
  */
+@JsonIgnoreProperties("hashedPassword")
 @DynamoDbBean
 public final class PackData extends AbstractDatabaseEntry {
 	private String name="", hashedPassword ="", owner="";
