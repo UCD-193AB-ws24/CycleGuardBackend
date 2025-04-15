@@ -46,9 +46,9 @@ public class UserDailyGoalAccessor extends AbstractDatabaseAccessor<UserDailyGoa
 		}
 		public UserDailyGoal(double distance, double time, double calories) {
 			this(
-					StringDoubles.fromDouble(distance),
-					StringDoubles.fromDouble(time),
-					StringDoubles.fromDouble(calories)
+					StringDoubles.toString(distance),
+					StringDoubles.toString(time),
+					StringDoubles.toString(calories)
 			);
 		}
 

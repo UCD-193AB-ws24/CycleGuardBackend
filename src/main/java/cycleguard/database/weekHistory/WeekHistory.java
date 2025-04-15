@@ -8,7 +8,6 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static cycleguard.util.StringDoubles.fromDouble;
 import static cycleguard.util.StringDoubles.toDouble;
 
 /**
@@ -36,9 +35,9 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 	public static final class SingleRideHistory {
 		public SingleRideHistory() {}
 		public SingleRideHistory(ProcessRideService.RideInfo rideInfo) {
-			distance = fromDouble(rideInfo.distance);
-			calories = fromDouble(rideInfo.calories);
-			time = fromDouble(rideInfo.time);
+			distance = StringDoubles.toString(rideInfo.distance);
+			calories = StringDoubles.toString(rideInfo.calories);
+			time = StringDoubles.toString(rideInfo.time);
 		}
 		private String distance="0", calories="0", time="0";
 		private boolean overFiveMiles = false;
@@ -51,7 +50,7 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 			this.distance = distance;
 		}
 		public void setDistance(double distance) {
-			this.distance = StringDoubles.fromDouble(distance);
+			this.distance = StringDoubles.toString(distance);
 		}
 
 		public String getCalories() {
@@ -62,7 +61,7 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 			this.calories = calories;
 		}
 		public void setCalories(double calories) {
-			this.calories = StringDoubles.fromDouble(calories);
+			this.calories = StringDoubles.toString(calories);
 		}
 
 		public String getTime() {
@@ -73,7 +72,7 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 			this.time = time;
 		}
 		public void setTime(double time) {
-			this.time = StringDoubles.fromDouble(time);
+			this.time = StringDoubles.toString(time);
 		}
 
 		public boolean isOverFiveMiles() {
@@ -97,15 +96,15 @@ public final class WeekHistory extends AbstractDatabaseUserEntry {
 		}
 
 		public void addDistance(String distance) {
-			this.distance = fromDouble(toDouble(this.distance) + toDouble(distance));
+			this.distance = StringDoubles.toString(toDouble(this.distance) + toDouble(distance));
 		}
 
 		public void addCalories(String calories) {
-			this.calories = fromDouble(toDouble(this.calories) + toDouble(calories));
+			this.calories = StringDoubles.toString(toDouble(this.calories) + toDouble(calories));
 		}
 
 		public void addTime(String time) {
-			this.time = fromDouble(toDouble(this.time) + toDouble(time));
+			this.time = StringDoubles.toString(toDouble(this.time) + toDouble(time));
 		}
 	}
 }

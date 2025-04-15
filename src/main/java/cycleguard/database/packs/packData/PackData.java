@@ -4,7 +4,6 @@ import cycleguard.database.AbstractDatabaseEntry;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  */
 @DynamoDbBean
 public final class PackData extends AbstractDatabaseEntry {
-	private String name="", password="", owner="";
+	private String name="", hashedPassword ="", owner="";
 	private List<String> memberList=new ArrayList<>();
 
 	@DynamoDbPartitionKey
@@ -30,12 +29,12 @@ public final class PackData extends AbstractDatabaseEntry {
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getHashedPassword() {
+		return hashedPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
 	}
 
 	public String getOwner() {
@@ -57,5 +56,9 @@ public final class PackData extends AbstractDatabaseEntry {
 	@Override
 	public void setPrimaryKey(String key) {
 		setName(key);
+	}
+
+	public int getMemberCount() {
+		return memberList.size();
 	}
 }

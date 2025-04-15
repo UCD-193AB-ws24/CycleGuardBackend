@@ -28,6 +28,10 @@ public class TimeUtil {
 		return now.getEpochSecond();
 	}
 
+	public static long getCurrentSecond() {
+		return getCurrentSecond(Instant.now());
+	}
+
 	public static Instant getAdjustedInstant(Instant now) {
 		Instant res = ChronoUnit.HOURS.addTo(now, HOUR_OFFSET);
 		return res;
