@@ -2,6 +2,7 @@ package cycleguard.database.rides;
 
 import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.globalLeaderboards.GlobalLeaderboardsService;
+import cycleguard.database.packs.PackDataService;
 import cycleguard.database.stats.UserStatsService;
 import cycleguard.database.tripCoordinates.TripCoordinatesService;
 import cycleguard.database.tripHistory.TripHistoryService;
@@ -28,6 +29,8 @@ public class ProcessRideService {
 	private TripCoordinatesService tripCoordinatesService;
 	@Autowired
 	private GlobalLeaderboardsService globalLeaderboardsService;
+	@Autowired
+	private PackDataService packDataService;
 
 	public long processNewRide(String username, RideInfo rideInfo) {
 		Instant now = Instant.now();
@@ -37,6 +40,7 @@ public class ProcessRideService {
 		tripHistoryService.processNewRide(username, rideInfo, now);
 		tripCoordinatesService.processNewRide(username, rideInfo, now);
 		globalLeaderboardsService.processNewRide(username, rideInfo, now);
+		packDataService.processNewRide(username, rideInfo, now);
 
 		return TimeUtil.getCurrentSecond(now);
 	}

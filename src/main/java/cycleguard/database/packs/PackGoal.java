@@ -1,4 +1,4 @@
-package cycleguard.database.packs.packGoal;
+package cycleguard.database.packs;
 
 import cycleguard.database.AbstractDatabaseEntry;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
@@ -16,22 +16,11 @@ import java.util.TreeMap;
  * </ul>
  */
 @DynamoDbBean
-public final class PackGoal extends AbstractDatabaseEntry {
-	private String name="";
+public final class PackGoal {
 	private Map<String, String> contributionMap = new TreeMap<>();
-	private String totalContribution="";
-	private boolean active;
+	private boolean active = false;
 	private String goalField="distance";
 	private long endTime, goalAmount;
-
-	@DynamoDbPartitionKey
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public Map<String, String> getContributionMap() {
 		return contributionMap;
@@ -71,18 +60,5 @@ public final class PackGoal extends AbstractDatabaseEntry {
 
 	public void setGoalAmount(long goalAmount) {
 		this.goalAmount = goalAmount;
-	}
-
-	public String getTotalContribution() {
-		return totalContribution;
-	}
-
-	public void setTotalContribution(String totalContribution) {
-		this.totalContribution = totalContribution;
-	}
-
-	@Override
-	public void setPrimaryKey(String key) {
-		setName(key);
 	}
 }

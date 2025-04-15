@@ -3,15 +3,13 @@ package cycleguard.rest.packs;
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.accessor.UserProfileAccessor;
-import cycleguard.database.packs.packData.PackData;
-import cycleguard.database.packs.packData.PackDataService;
+import cycleguard.database.packs.PackData;
+import cycleguard.database.packs.PackDataService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import static cycleguard.database.accessor.UserProfileAccessor.UserProfile;
 
 /**
  * Endpoint for a user to enter in health metrics.

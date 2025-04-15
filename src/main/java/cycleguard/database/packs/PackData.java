@@ -1,4 +1,4 @@
-package cycleguard.database.packs.packData;
+package cycleguard.database.packs;
 
 import cycleguard.database.AbstractDatabaseEntry;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
@@ -19,6 +19,7 @@ import java.util.List;
 public final class PackData extends AbstractDatabaseEntry {
 	private String name="", hashedPassword ="", owner="";
 	private List<String> memberList=new ArrayList<>();
+	private PackGoal packGoal = new PackGoal();
 
 	@DynamoDbPartitionKey
 	public String getName() {
@@ -60,5 +61,13 @@ public final class PackData extends AbstractDatabaseEntry {
 
 	public int getMemberCount() {
 		return memberList.size();
+	}
+
+	public PackGoal getPackGoal() {
+		return packGoal;
+	}
+
+	public void setPackGoal(PackGoal packGoal) {
+		this.packGoal = packGoal;
 	}
 }

@@ -1,16 +1,20 @@
-package cycleguard.database.packs.packData;
+package cycleguard.database.packs;
 
+import cycleguard.database.RideProcessable;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
-import cycleguard.database.packs.packGoal.PackGoalService;
-import cycleguard.database.stats.UserStats;
+import cycleguard.database.rides.ProcessRideService;
+import cycleguard.database.rides.ProcessRideService.RideInfo;
+import cycleguard.util.TimeUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
-public class PackDataService {
+public class PackDataService implements RideProcessable {
 	@Autowired
 	private UserProfileAccessor userProfileAccessor;
 	@Autowired
@@ -21,8 +25,17 @@ public class PackDataService {
 	private PasswordEncoder passwordEncoder;
 
 	public PackData getPack(String packName) {
-		return packDataAccessor.getEntryOrDefaultBlank(packName);
+		PackData packData = packDataAccessor.getEntry(packName);
+		if (packData==null) return null;
+
+		PackGoal packGoal = packDataAccessor.getEntry(packName).getPackGoal();
+		if (packGoal.getEndTime() > TimeUtil.getCurrentSecond() && packGoal.isActive()) {
+			packGoal.setActive(false);
+			packDataAccessor.setEntry(packData);
+		}
+		return packData;
 	}
+
 
 	public boolean packExists(String packName) {
 		return packDataAccessor.hasEntry(packName);
@@ -45,7 +58,6 @@ public class PackDataService {
 		packData.getMemberList().add(username);
 
 		packDataAccessor.setEntry(packData);
-		packGoalService.createEntry(packName);
 
 		userProfile.setPack(packName);
 		userProfileAccessor.setEntry(userProfile);
@@ -90,9 +102,8 @@ public class PackDataService {
 		if (username.equals(packData.getOwner())) return HttpServletResponse.SC_CONFLICT;
 
 		packData.getMemberList().remove(username);
+		packData.getPackGoal().getContributionMap().remove(username);
 		packDataAccessor.setEntry(packData);
-
-		packGoalService.removeUser(packName, username);
 
 		userProfile.setPack("");
 		userProfileAccessor.setEntry(userProfile);
@@ -115,19 +126,40 @@ public class PackDataService {
 
 		if (packData.getMemberList().size() == 1) {
 			packDataAccessor.deleteEntry(packName);
-			packGoalService.deleteEntry(packName);
 			return HttpServletResponse.SC_OK;
 		}
 
 		packData.getMemberList().remove(username);
 		packData.setOwner(newOwner);
+		packData.getPackGoal().getContributionMap().remove(username);
 		packDataAccessor.setEntry(packData);
 
-		packGoalService.removeUser(packName, username);
 
 		userProfile.setPack("");
 		userProfileAccessor.setEntry(userProfile);
 		return HttpServletResponse.SC_OK;
 	}
 
+	@Override
+	public void processNewRide(String username, RideInfo rideInfo, Instant now) {
+		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty()) return;
+
+		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
+	    packGoalService.updateContribution(username, packData, rideInfo);
+
+		packDataAccessor.setEntry(packData);
+	}
+
+	public int setGoal(String username, long durationSeconds, String goalField, long goalAmount) {
+		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
+			return HttpServletResponse.SC_NOT_FOUND;
+
+		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
+		int res = packGoalService.setGoal(packData, durationSeconds, goalField, goalAmount);
+
+		if (res == 200) packDataAccessor.setEntry(packData);
+		return res;
+	}
 }
