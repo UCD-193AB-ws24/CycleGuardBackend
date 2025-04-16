@@ -129,13 +129,12 @@ public class PackDataService implements RideProcessable {
 
 		if (packData.getMemberList().size() == 1) {
 			packDataAccessor.deleteEntry(packName);
-			return HttpServletResponse.SC_OK;
+		} else {
+			packData.getMemberList().remove(username);
+			packData.setOwner(newOwner);
+			packData.getPackGoal().getContributionMap().remove(username);
+			packDataAccessor.setEntry(packData);
 		}
-
-		packData.getMemberList().remove(username);
-		packData.setOwner(newOwner);
-		packData.getPackGoal().getContributionMap().remove(username);
-		packDataAccessor.setEntry(packData);
 
 
 		userProfile.setPack("");
@@ -177,6 +176,8 @@ public class PackDataService implements RideProcessable {
 		if (!username.equals(packData.getOwner())) return HttpServletResponse.SC_UNAUTHORIZED;
 
 		packGoalService.clearGoal(packData);
+
+		packDataAccessor.setEntry(packData);
 
 		return HttpServletResponse.SC_OK;
 	}
