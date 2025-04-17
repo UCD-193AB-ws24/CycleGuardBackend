@@ -25,7 +25,7 @@ public final class OwnedItems {
 	private ItemInfoService itemInfoService;
 
 	@GetMapping("/purchaseInfo/ownedItems")
-	public List<String> buy(@RequestHeader("Token") String token, HttpServletResponse response) {
+	public List<String> ownedItems(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);
 		if (username == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

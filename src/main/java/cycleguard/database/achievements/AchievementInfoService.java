@@ -63,7 +63,7 @@ public class AchievementInfoService {
 //		1: Rocket boost
 		{
 			var purchases = purchaseInfoAccessor.getEntryOrDefaultBlank(username);
-			int progress = purchases.getThemesOwned().contains("Rocket Boost")?1:0;
+			int progress = purchases.getMiscOwned().contains("Rocket Boost")?1:0;
 			setAchievement(progressMap, 1, progress, 1);
 		}
 

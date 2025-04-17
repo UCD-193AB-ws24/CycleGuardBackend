@@ -43,6 +43,8 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 	public static final class PurchaseInfo extends AbstractDatabaseUserEntry {
 		private long cycleCoins;
 		private List<String> themesOwned = new ArrayList<>();
+		private List<String> miscOwned = new ArrayList<>();
+		private List<String> iconsOwned = new ArrayList<>();
 
 		public long getCycleCoins() {
 			return cycleCoins;
@@ -58,6 +60,22 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 
 		public void setThemesOwned(List<String> themesOwned) {
 			this.themesOwned = themesOwned;
+		}
+
+		public List<String> getMiscOwned() {
+			return miscOwned;
+		}
+
+		public void setMiscOwned(List<String> miscOwned) {
+			this.miscOwned = miscOwned;
+		}
+
+		public List<String> getIconsOwned() {
+			return iconsOwned;
+		}
+
+		public void setIconsOwned(List<String> iconsOwned) {
+			this.iconsOwned = iconsOwned;
 		}
 	}
 }
