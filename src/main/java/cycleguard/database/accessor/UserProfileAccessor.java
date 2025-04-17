@@ -59,6 +59,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	public static final class UserProfile extends AbstractDatabaseUserEntry {
 		private String displayName="", bio="", pack="";
 		private boolean isPublic, isNewAccount;
+		private String profileIcon="";
 
 		public String getDisplayName() {
 			return displayName;
@@ -98,6 +99,14 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 
 		public void setNewAccount(boolean newAccount) {
 			isNewAccount = newAccount;
+		}
+
+		public String getProfileIcon() {
+			return profileIcon;
+		}
+
+		public void setProfileIcon(String profileIcon) {
+			this.profileIcon = profileIcon;
 		}
 	}
 }
