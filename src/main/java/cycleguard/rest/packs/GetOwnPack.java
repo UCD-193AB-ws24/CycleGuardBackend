@@ -32,7 +32,7 @@ public final class GetOwnPack {
 			return null;
 		}
 
-		String packName = userProfileAccessor.getEntry(username).getPack();
+		String packName = userProfileAccessor.getEntryOrDefaultBlank(username).getPack();
 		if (packName==null || packName.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
