@@ -58,7 +58,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	@DynamoDbBean
 	public static final class UserProfile extends AbstractDatabaseUserEntry {
 		private String displayName="", bio="", pack="";
-		private boolean isPublic, isNewAccount;
+		private boolean isPublic, isNewAccount=true;
 		private String profileIcon="";
 
 		public String getDisplayName() {
