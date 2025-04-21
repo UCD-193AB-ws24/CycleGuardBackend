@@ -97,7 +97,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 			return isNewAccount;
 		}
 
-		public void setNewAccount(boolean newAccount) {
+		public void setIsNewAccount(boolean newAccount) {
 			isNewAccount = newAccount;
 		}
 
