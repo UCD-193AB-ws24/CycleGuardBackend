@@ -39,10 +39,10 @@ public final class BuyMisc {
 		String item = itemToBuy.getItem();
 
 		PurchaseInfoAccessor.PurchaseInfo purchaseInfo = purchaseInfoAccessor.getEntryOrDefaultBlank(username);
-		if (purchaseInfo.getMiscOwned().contains(item)) {
-			response.setStatus(HttpServletResponse.SC_CONFLICT);
-			return "ALREADY OWNED";
-		}
+//		if (purchaseInfo.getMiscOwned().contains(item)) {
+//			response.setStatus(HttpServletResponse.SC_CONFLICT);
+//			return "ALREADY OWNED";
+//		}
 
 		boolean bought = false;
 		if (item.equals("Rocket Boost")) {
@@ -58,7 +58,8 @@ public final class BuyMisc {
 			return "NOT FOUND";
 		}
 
-		purchaseInfo.getMiscOwned().add(item);
+		if (!purchaseInfo.getMiscOwned().contains(item))
+			purchaseInfo.getMiscOwned().add(item);
 
 		purchaseInfoAccessor.setEntry(purchaseInfo);
 		achievementInfoService.processAchievements(username);
