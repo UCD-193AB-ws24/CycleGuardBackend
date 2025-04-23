@@ -44,7 +44,7 @@ public class PackDataService implements RideProcessable {
 		packName = packName.trim();
 		if (packName.isEmpty()) return HttpServletResponse.SC_BAD_REQUEST;
 
-		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty())
 			return HttpServletResponse.SC_CONFLICT;
 		if (packExists(packName)) return HttpServletResponse.SC_CONFLICT;
@@ -67,7 +67,7 @@ public class PackDataService implements RideProcessable {
 //	Delete pack?
 
 	public int joinPack(String username, String packName, String password) {
-		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty()) {
 			if (userProfile.getPack().equals(packName)) return HttpServletResponse.SC_OK;
 			return HttpServletResponse.SC_CONFLICT;
@@ -144,7 +144,7 @@ public class PackDataService implements RideProcessable {
 
 	@Override
 	public void processNewRide(String username, RideInfo rideInfo, Instant now) {
-		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty()) return;
 
 		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
@@ -154,7 +154,7 @@ public class PackDataService implements RideProcessable {
 	}
 
 	public int setGoal(String username, long durationSeconds, String goalField, long goalAmount) {
-		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
 			return HttpServletResponse.SC_NOT_FOUND;
 
@@ -167,7 +167,7 @@ public class PackDataService implements RideProcessable {
 	}
 
 	public int cancelCurrentGoal(String username) {
-		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
 			return HttpServletResponse.SC_NOT_FOUND;
 
