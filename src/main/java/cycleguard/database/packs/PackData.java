@@ -19,8 +19,9 @@ import java.util.List;
 @JsonIgnoreProperties("hashedPassword")
 @DynamoDbBean
 public final class PackData extends AbstractDatabaseEntry {
-	private String name="", hashedPassword ="", owner="";
-	private List<String> memberList=new ArrayList<>();
+	private String name="", hashedPassword="", owner="";
+	private List<String> memberList = new ArrayList<>();
+	private List<String> invites = new ArrayList<>();
 	private PackGoal packGoal = new PackGoal();
 
 	@DynamoDbPartitionKey
@@ -71,5 +72,13 @@ public final class PackData extends AbstractDatabaseEntry {
 
 	public void setPackGoal(PackGoal packGoal) {
 		this.packGoal = packGoal;
+	}
+
+	public List<String> getInvites() {
+		return invites;
+	}
+
+	public void setInvites(List<String> invites) {
+		this.invites = invites;
 	}
 }

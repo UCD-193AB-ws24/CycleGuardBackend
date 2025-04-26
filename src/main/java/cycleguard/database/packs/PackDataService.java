@@ -1,9 +1,9 @@
 package cycleguard.database.packs;
 
 import cycleguard.database.RideProcessable;
+import cycleguard.database.accessor.UserCredentialsAccessor;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
-import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.rides.ProcessRideService.RideInfo;
 import cycleguard.util.TimeUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
+
+import static cycleguard.database.packs.PackInvitesAccessor.*;
 
 @Service
 public class PackDataService implements RideProcessable {
@@ -78,18 +81,28 @@ public class PackDataService implements RideProcessable {
 		if (packData==null) return HttpServletResponse.SC_NOT_FOUND;
 		if (packData.getMemberList().contains(username)) return HttpServletResponse.SC_OK;
 
-		String hashedPassword = packData.getHashedPassword();
-		if (!passwordEncoder.matches(password, hashedPassword))
-			return HttpServletResponse.SC_UNAUTHORIZED;
+		if (!packData.getInvites().contains(username)) {
+			String hashedPassword = packData.getHashedPassword();
+			if (!passwordEncoder.matches(password, hashedPassword))
+				return HttpServletResponse.SC_UNAUTHORIZED;
+		}
 
 
 		packData.getMemberList().add(username);
 		packData.getMemberList().sort(String::compareTo);
+		packData.getInvites().remove(username);
 		packDataAccessor.setEntry(packData);
 
 
 		userProfile.setPack(packName);
 		userProfileAccessor.setEntry(userProfile);
+
+		var invites = packInvitesAccessor.getEntryOrDefaultBlank(username);
+		if (invites.getInvites().contains(packName)) {
+			invites.getInvites().remove(packName);
+			packInvitesAccessor.setEntry(invites);
+		}
+
 		return HttpServletResponse.SC_OK;
 	}
 
@@ -178,6 +191,74 @@ public class PackDataService implements RideProcessable {
 		packGoalService.clearGoal(packData);
 
 		packDataAccessor.setEntry(packData);
+
+		return HttpServletResponse.SC_OK;
+	}
+
+
+
+	@Autowired
+	private UserCredentialsAccessor userCredentialsAccessor;
+	@Autowired
+	private PackInvitesAccessor packInvitesAccessor;
+	public int inviteUser(String username, String userToInvite) {
+		if (!userCredentialsAccessor.hasEntry(userToInvite))
+			return HttpServletResponse.SC_NOT_FOUND;
+
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
+		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
+
+		if (packData.getMemberList().contains(userToInvite)) return HttpServletResponse.SC_OK;
+		if (packData.getInvites().contains(userToInvite)) return HttpServletResponse.SC_OK;
+
+		String packName = packData.getName();
+		PackInvites packInvites = packInvitesAccessor.getEntryOrDefaultBlank(userToInvite);
+		if (packInvites.getInvites().contains(packName)) return HttpServletResponse.SC_OK;
+
+		{
+			List<String> curInvites = packInvites.getInvites();
+			curInvites.add(packName);
+			curInvites.sort(String::compareTo);
+			packInvites.setInvites(curInvites);
+		}
+		packInvitesAccessor.setEntry(packInvites);
+
+		{
+			List<String> curInvites = packData.getInvites();
+			curInvites.add(userToInvite);
+			curInvites.sort(String::compareTo);
+			packData.setInvites(curInvites);
+		}
+		packDataAccessor.setEntry(packData);
+
+		return HttpServletResponse.SC_OK;
+	}
+
+	public int acceptInvite(String username, String packName) {
+		return joinPack(username, packName, "");
+	}
+
+	public int cancelInvite(String username, String otherUser) {
+		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
+			return HttpServletResponse.SC_NOT_FOUND;
+
+		PackData packData = packDataAccessor.getEntry(userProfile.getPack());
+		String packName = packData.getName();
+
+		return declineInvite(otherUser, packName);
+	}
+
+	public int declineInvite(String username, String packName) {
+		PackInvites packInvites = packInvitesAccessor.getEntryOrDefaultBlank(username);
+		if (!packInvites.getInvites().contains(packName)) return HttpServletResponse.SC_OK;
+
+		PackData packData = packDataAccessor.getEntry(packName);
+		packData.getInvites().remove(username);
+		packInvites.getInvites().remove(packName);
+
+		packDataAccessor.setEntry(packData);
+		packInvitesAccessor.setEntry(packInvites);
 
 		return HttpServletResponse.SC_OK;
 	}
