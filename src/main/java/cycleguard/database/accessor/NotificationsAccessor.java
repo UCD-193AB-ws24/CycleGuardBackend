@@ -63,7 +63,7 @@ public class NotificationsAccessor extends AbstractDatabaseAccessor<Notification
 	@DynamoDbBean
 	public static final class Notification {
 		private String title="", body="";
-		private int hour, minute, frequency, dayOfWeek;
+		private int hour, minute, frequency, dayOfWeek, month;
 
 		public String getTitle() {
 			return title;
@@ -113,19 +113,25 @@ public class NotificationsAccessor extends AbstractDatabaseAccessor<Notification
 			this.dayOfWeek = dayOfWeek;
 		}
 
+		public int getMonth() {
+			return month;
+		}
+
+		public void setMonth(int month) {
+			this.month = month;
+		}
+
 		@Override
 		public boolean equals(Object object) {
 			if (this == object) return true;
 			if (object == null || getClass() != object.getClass()) return false;
 			Notification that = (Notification) object;
-			return hour == that.hour && minute == that.minute && frequency == that.frequency &&
-					dayOfWeek == that.dayOfWeek && Objects.equals(title, that.title) &&
-					Objects.equals(body, that.body);
+			return hour == that.hour && minute == that.minute && frequency == that.frequency && dayOfWeek == that.dayOfWeek && month == that.month && Objects.equals(title, that.title) && Objects.equals(body, that.body);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(title, body, hour, minute, frequency, dayOfWeek);
+			return Objects.hash(title, body, hour, minute, frequency, dayOfWeek, month);
 		}
 
 		@Override
@@ -137,6 +143,7 @@ public class NotificationsAccessor extends AbstractDatabaseAccessor<Notification
 					", minute=" + minute +
 					", frequency=" + frequency +
 					", dayOfWeek=" + dayOfWeek +
+					", month=" + month +
 					'}';
 		}
 	}
