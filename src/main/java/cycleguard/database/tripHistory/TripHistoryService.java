@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 public class TripHistoryService {
-	public static final int MAX_HISTORY = 50;
+	public static final int MAX_HISTORY = 500;
 	@Autowired
 	private TripHistoryAccessor tripHistoryAccessor;
 
