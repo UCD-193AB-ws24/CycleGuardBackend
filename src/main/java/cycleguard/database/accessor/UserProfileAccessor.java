@@ -28,7 +28,9 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 
 	@Override
 	protected UserProfile getBlankEntry() {
-		return new UserProfile();
+		var profile = new UserProfile();
+		profile.setPack("");
+		return profile;
 	}
 
 	public List<UserProfile> getAllUsers() {
@@ -57,7 +59,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	 */
 	@DynamoDbBean
 	public static final class UserProfile extends AbstractDatabaseUserEntry {
-		private String displayName="", bio="", pack="";
+		private String displayName="", bio="", pack;
 		private boolean isPublic, isNewAccount=true;
 		private String profileIcon="";
 
@@ -108,5 +110,7 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 		public void setProfileIcon(String profileIcon) {
 			this.profileIcon = profileIcon;
 		}
+
+
 	}
 }

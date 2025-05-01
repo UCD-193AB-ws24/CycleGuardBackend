@@ -39,6 +39,12 @@ public final class UpdateOwnProfile {
 		}
 		userProfile.setUsername(username);
 
+		System.out.println(userProfile.getPack());
+		if (userProfile.getPack()==null) {
+			UserProfile existing = userProfileAccessor.getEntryOrDefaultBlank(username);
+			userProfile.setPack(existing.getPack());
+		}
+
 		userProfileAccessor.setEntry(userProfile);
 
 		globalLeaderboardsService.processNewRide(username, null, null);
