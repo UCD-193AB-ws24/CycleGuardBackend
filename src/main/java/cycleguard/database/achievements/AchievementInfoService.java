@@ -112,7 +112,7 @@ public class AchievementInfoService {
 		for (String username : packData.getMemberList()) {
 			AchievementInfo achievementInfo = achievementInfoAccessor.getEntryOrDefaultBlank(username);
 			Map<Integer, AchievementProgress> progressMap = achievementInfo.getAchievementProgressMap();
-			if (contribution<=progressMap.get(15).getCurrentProgress()) continue;
+			if (contribution<=progressMap.getOrDefault(15, new AchievementProgress()).getCurrentProgress()) continue;
 
 			setAchievement(progressMap, 12, contribution, 50);
 			setAchievement(progressMap, 13, contribution, 100);
