@@ -1,6 +1,7 @@
 package cycleguard.database.packs;
 
 import cycleguard.database.accessor.UserProfileAccessor;
+import cycleguard.database.achievements.AchievementInfoService;
 import cycleguard.database.stats.UserStatsService;
 import cycleguard.util.StringDoubles;
 import cycleguard.util.TimeUtil;
@@ -19,6 +20,8 @@ class PackGoalService {
 	private UserStatsService userStatsService;
 	@Autowired
 	private UserProfileAccessor userProfileAccessor;
+	@Autowired
+	private AchievementInfoService achievementInfoService;
 
 	void updateContribution(String username, PackData packData, RideInfo rideInfo) {
 		PackGoal packGoal = packData.getPackGoal();
@@ -26,14 +29,21 @@ class PackGoalService {
 
 		Map<String, String> contributionMap = packGoal.getContributionMap();
 
+		double prevContribution = packGoal.getTotalContribution();
+		if (prevContribution>=packGoal.getGoalAmount()) return;
+
 		double curVal = StringDoubles.toDouble(contributionMap.getOrDefault(username, "0"));
-
+		double toAdd;
 		if (packGoal.getGoalField().equals(GOAL_DISTANCE))
-			curVal += rideInfo.distance;
+			toAdd = rideInfo.distance;
 		else
-			curVal += rideInfo.time;
+			toAdd = rideInfo.time;
+		toAdd = Math.min(packGoal.getGoalAmount()-prevContribution, toAdd);
 
+		curVal += toAdd;
 		contributionMap.put(username, StringDoubles.toString(curVal));
+
+		achievementInfoService.processPackGoalProgress(packData);
 	}
 
 	int setGoal(PackData packData, long durationSeconds, String goalField, long goalAmount) {

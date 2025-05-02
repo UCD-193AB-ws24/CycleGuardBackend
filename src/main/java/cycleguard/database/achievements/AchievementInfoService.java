@@ -3,6 +3,8 @@ package cycleguard.database.achievements;
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.PurchaseInfoAccessor;
 import cycleguard.database.achievements.AchievementInfo.AchievementProgress;
+import cycleguard.database.packs.PackData;
+import cycleguard.database.packs.PackGoal;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.database.stats.UserStats;
 import cycleguard.database.stats.UserStatsService;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 
 @Service
 public class AchievementInfoService {
@@ -24,7 +25,7 @@ public class AchievementInfoService {
 	private UserStatsService userStatsService;
 	@Autowired
 	private PurchaseInfoAccessor purchaseInfoAccessor;
-	private static final int NUM_ACHIEVEMENTS = 12;
+	private static final int NUM_ACHIEVEMENTS = 16;
 
 	public AchievementInfo getAchievementInfo(String username) {
 		AchievementInfo achievementInfo = achievementInfoAccessor.getEntryOrDefaultBlank(username);
@@ -35,6 +36,8 @@ public class AchievementInfoService {
 	private void setAchievement(Map<Integer, AchievementProgress> progressMap,
 	                            int idx, long progress, long goal) {
 		AchievementProgress achievementProgress = progressMap.getOrDefault(idx, new AchievementProgress());
+		progress = Math.max(progress, achievementProgress.getCurrentProgress());
+
 		boolean complete = progress >= goal;
 
 		achievementProgress.setComplete(complete);
@@ -98,5 +101,25 @@ public class AchievementInfoService {
 
 	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
 		processAchievements(username);
+	}
+
+	// 12-15: Pack goals
+	//	50, 100, 250, 500
+	public void processPackGoalProgress(PackData packData) {
+		PackGoal goal = packData.getPackGoal();
+		int contribution = (int)(goal.getTotalContribution());
+
+		for (String username : packData.getMemberList()) {
+			AchievementInfo achievementInfo = achievementInfoAccessor.getEntryOrDefaultBlank(username);
+
+			Map<Integer, AchievementProgress> progressMap = achievementInfo.getAchievementProgressMap();
+			setAchievement(progressMap, 12, contribution, 50);
+			setAchievement(progressMap, 13, contribution, 100);
+			setAchievement(progressMap, 14, contribution, 250);
+			setAchievement(progressMap, 15, contribution, 500);
+
+			setAchievement(progressMap, 2, completedAchievements(progressMap), NUM_ACHIEVEMENTS-1);
+			achievementInfoAccessor.setEntry(achievementInfo);
+		}
 	}
 }
