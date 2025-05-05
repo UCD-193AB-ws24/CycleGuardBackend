@@ -36,11 +36,20 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	public List<UserProfile> getAllUsers() {
 		try {
 			// Perform a scan operation on the DynamoDB table
-			return tableInstance.scan(ScanEnhancedRequest.builder().build())
+			var users = tableInstance.scan(ScanEnhancedRequest.builder().build())
 				.items()
 				.stream()
-				.filter(UserProfile::getIsPublic)
 				.collect(Collectors.toList());
+
+			for (var user : users) {
+				if (!user.getIsPublic()) {
+					user.setBio("");
+					user.setPack("");
+					user.setIsNewAccount(false);
+				}
+			}
+
+			return users;
 
 		} catch (Exception e) {
 			System.err.println("Error fetching users from DynamoDB: " + e.getMessage());
