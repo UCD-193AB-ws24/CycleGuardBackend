@@ -56,6 +56,19 @@ public class WeekHistoryService {
 		singleRideHistory.addDistance(prev.getDistance());
 		singleRideHistory.setOverFiveMiles(prev.isOverFiveMiles());
 
+		boolean overFiveMiles = singleRideHistory.getDistanceDouble() >= 5 && !singleRideHistory.isOverFiveMiles();
+		int earnedCycleCoins = (int)rideInfo.distance;
+
+		if (overFiveMiles || earnedCycleCoins>0) {
+			var purchaseInfo = purchaseInfoAccessor.getEntryOrDefaultBlank(username);
+			if (overFiveMiles) {
+				singleRideHistory.setOverFiveMiles(true);
+				earnedCycleCoins += 5;
+			}
+			purchaseInfo.setCycleCoins(purchaseInfo.getCycleCoins()+earnedCycleCoins);
+			purchaseInfoAccessor.setEntry(purchaseInfo);
+		}
+
 		if (singleRideHistory.getDistanceDouble() >= 5 && !singleRideHistory.isOverFiveMiles()) {
 			singleRideHistory.setOverFiveMiles(true);
 
