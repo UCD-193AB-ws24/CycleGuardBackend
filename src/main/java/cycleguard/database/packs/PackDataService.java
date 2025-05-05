@@ -137,6 +137,8 @@ public class PackDataService implements RideProcessable {
 		PackData packData = packDataAccessor.getEntry(packName);
 		if (packData==null) return HttpServletResponse.SC_NOT_FOUND;
 
+		if (!packData.getOwner().equals(username)) return HttpServletResponse.SC_UNAUTHORIZED;
+
 		if (packData.getMemberList().size() > 1 && !packData.getMemberList().contains(newOwner))
 			return HttpServletResponse.SC_CONFLICT;
 
@@ -260,6 +262,55 @@ public class PackDataService implements RideProcessable {
 		packDataAccessor.setEntry(packData);
 		packInvitesAccessor.setEntry(packInvites);
 
+		return HttpServletResponse.SC_OK;
+	}
+
+	public int changeOwner(String username, String newOwner) {
+		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
+			return HttpServletResponse.SC_OK;
+
+		if (username.equals(newOwner)) return HttpServletResponse.SC_CONFLICT;
+
+		String packName = userProfile.getPack();
+		PackData packData = packDataAccessor.getEntry(packName);
+		if (packData==null) return HttpServletResponse.SC_NOT_FOUND;
+
+		if (!packData.getOwner().equals(username)) return HttpServletResponse.SC_UNAUTHORIZED;
+
+		if (packData.getMemberList().size() > 1 && !packData.getMemberList().contains(newOwner))
+			return HttpServletResponse.SC_CONFLICT;
+
+		packData.setOwner(newOwner);
+		packDataAccessor.setEntry(packData);
+
+		return HttpServletResponse.SC_OK;
+	}
+
+	public int kickUser(String username, String user) {
+		UserProfile userProfile = userProfileAccessor.getEntry(username);
+		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
+			return HttpServletResponse.SC_OK;
+
+		if (username.equals(user)) return HttpServletResponse.SC_CONFLICT;
+
+		String packName = userProfile.getPack();
+		PackData packData = packDataAccessor.getEntry(packName);
+		if (packData==null) return HttpServletResponse.SC_NOT_FOUND;
+
+		if (!packData.getOwner().equals(username)) return HttpServletResponse.SC_UNAUTHORIZED;
+
+		if (packData.getMemberList().size() > 1 && !packData.getMemberList().contains(user))
+			return HttpServletResponse.SC_CONFLICT;
+
+		packData.getMemberList().remove(user);
+		packData.getPackGoal().getContributionMap().remove(user);
+		packDataAccessor.setEntry(packData);
+
+
+		UserProfile userToKick = userProfileAccessor.getEntry(user);
+		userToKick.setPack("");
+		userProfileAccessor.setEntry(userToKick);
 		return HttpServletResponse.SC_OK;
 	}
 }
