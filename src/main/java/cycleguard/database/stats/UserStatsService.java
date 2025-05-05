@@ -49,4 +49,8 @@ public class UserStatsService {
 
 		userStatsAccessor.setEntry(stats);
 	}
+
+	public void setEntry(UserStats userStats) {
+		userStatsAccessor.setEntry(userStats);
+	}
 }

@@ -17,6 +17,7 @@ import java.time.Instant;
 public final class UserStats extends AbstractDatabaseUserEntry {
 	private long accountCreationTime;
 	private String totalDistance, totalTime;
+	private long bestPackGoalProgress;
 	private long lastRideDay;
 	private long rideStreak, bestStreak;
 
@@ -48,6 +49,14 @@ public final class UserStats extends AbstractDatabaseUserEntry {
 
 	public void setTotalTime(String totalTime) {
 		this.totalTime = totalTime;
+	}
+
+	public long getBestPackGoalProgress() {
+		return bestPackGoalProgress;
+	}
+
+	public void setBestPackGoalProgress(long bestPackGoalProgress) {
+		this.bestPackGoalProgress = bestPackGoalProgress;
 	}
 
 	public long getLastRideDay() {

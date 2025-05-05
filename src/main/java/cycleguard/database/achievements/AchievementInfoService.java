@@ -121,6 +121,10 @@ public class AchievementInfoService {
 
 			setAchievement(progressMap, 2, completedAchievements(progressMap), NUM_ACHIEVEMENTS-1);
 			achievementInfoAccessor.setEntry(achievementInfo);
+
+			var stats = userStatsService.getUserStats(username);
+			stats.setBestPackGoalProgress(contribution);
+			userStatsService.setEntry(stats);
 		}
 	}
 }
