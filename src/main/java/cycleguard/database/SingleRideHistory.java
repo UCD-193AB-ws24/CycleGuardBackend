@@ -13,8 +13,10 @@ public final class SingleRideHistory {
 		distance = StringDoubles.toString(rideInfo.distance);
 		calories = StringDoubles.toString(rideInfo.calories);
 		time = StringDoubles.toString(rideInfo.time);
+		averageAltitude = StringDoubles.toString(rideInfo.averageAltitude);
+		climb = StringDoubles.toString(rideInfo.climb);
 	}
-	private String distance="0", calories="0", time="0";
+	private String distance="0", calories="0", time="0", averageAltitude="0", climb="0";
 
 	public String getDistance() {
 		return distance;
@@ -38,6 +40,22 @@ public final class SingleRideHistory {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public String getAverageAltitude() {
+		return averageAltitude;
+	}
+
+	public void setAverageAltitude(String averageAltitude) {
+		this.averageAltitude = averageAltitude;
+	}
+
+	public String getClimb() {
+		return climb;
+	}
+
+	public void setClimb(String climb) {
+		this.climb = climb;
 	}
 
 	public void addDistance(String distance) {

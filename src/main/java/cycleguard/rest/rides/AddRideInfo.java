@@ -32,7 +32,7 @@ public final class AddRideInfo {
 			return "UNAUTHORIZED";
 		}
 
-//		System.out.println(rideInfo);
+		System.out.println(rideInfo);
 		long timestamp = processRideService.processNewRide(username, rideInfo);
 
 		return Long.toString(timestamp);

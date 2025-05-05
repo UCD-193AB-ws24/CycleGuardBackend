@@ -46,7 +46,7 @@ public class ProcessRideService {
 	}
 
 	public static final class RideInfo {
-		public double distance, calories, time;
+		public double distance, calories, time, climb, averageAltitude;
 		public List<String> latitudes=new ArrayList<>(), longitudes=new ArrayList<>();
 
 		@Override
@@ -55,6 +55,8 @@ public class ProcessRideService {
 					"distance=" + distance +
 					", calories=" + calories +
 					", time=" + time +
+					", climb=" + climb +
+					", averageAltitude=" + averageAltitude +
 					", latitudes=" + latitudes +
 					", longitudes=" + longitudes +
 					'}';
