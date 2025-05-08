@@ -14,4 +14,5 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @DynamoDbBean
 public abstract class AbstractDatabaseEntry {
 	public abstract void setPrimaryKey(String key);
+	public abstract String getPrimaryKey();
 }

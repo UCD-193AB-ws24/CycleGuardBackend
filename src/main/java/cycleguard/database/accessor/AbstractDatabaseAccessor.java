@@ -2,6 +2,10 @@ package cycleguard.database.accessor;
 
 import cycleguard.database.AbstractDatabaseEntry;
 import cycleguard.database.AbstractDatabaseUserEntry;
+import cycleguard.database.cache.CacheTimeToDelete;
+import cycleguard.database.cache.DatabaseCacheService;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
@@ -13,14 +17,18 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Wrapper for DynamoDB database access.
  * Subclasses must implement <code>getTableInstance</code> to return a singleton instance of the DynamoDB table, along with
  * setting {@link EntryType} to the class to be stored.
  * <br>
- * See {@link UserInfoAccessor} for an example of extending this class.
+ * See {@link UserProfileAccessor} for an example of extending this class.
  * <br><br>
  * When this class is extended and a new table is added, the AWS IAM policy must be updated to include that table
  * (ask Jason to update that).
@@ -47,6 +55,33 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 				.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
 				.build();
 		client = DynamoDbEnhancedClient.builder().dynamoDbClient(ddb).build();
+	}
+
+	@Autowired
+	private DatabaseCacheService databaseCacheService;
+	private TreeMap<String, CacheTimeToDelete<EntryType>> cache = new TreeMap<>();
+	private TreeMap<String, Long> blankEntries = new TreeMap<>();
+	public void clearOldCacheEntries(long curSysTime) {
+		for (var entry : new ArrayList<>(cache.entrySet())) {
+			String key = entry.getKey();
+			CacheTimeToDelete<EntryType> cached = entry.getValue();
+			if (cached.getTimeToDelete() <= curSysTime) {
+				if (cached.isDirty())
+					getTableInstance().putItem(cached.getEntry());
+				cache.remove(key);
+			}
+		}
+
+		for (var entry : new ArrayList<>(blankEntries.entrySet())) {
+			String key = entry.getKey();
+			long timeToDelete = entry.getValue();
+			if (timeToDelete <= curSysTime)
+				blankEntries.remove(key);
+		}
+	}
+	@PostConstruct
+	public void subscribeToCache() {
+		databaseCacheService.subscribe(this);
 	}
 
 	/**
@@ -78,14 +113,32 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * <code>null</code> if the key does not exist in the table
 	 */
 	public EntryType getEntry(String key) {
+		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
+		CacheTimeToDelete<EntryType> cacheEntry = cache.getOrDefault(key, null);
+		if (cacheEntry != null) {
+			cacheEntry.setTimeToDelete(timeToDelete);
+			return cacheEntry.getEntry();
+		}
+
+		EntryType entry = getTableInstance().getItem(getKey(key));
+		cache.put(key, new CacheTimeToDelete<>(timeToDelete, entry, false));
 		return getTableInstance().getItem(getKey(key));
 	}
 
 	public EntryType getEntryOrDefaultBlank(String key) {
-		EntryType entry = getTableInstance().getItem(getKey(key));
+		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
+		if (blankEntries.containsKey(key)) {
+			EntryType entry = getBlankEntry();
+			entry.setPrimaryKey(key);
+			blankEntries.put(key, timeToDelete);
+			return entry;
+		}
+		EntryType entry = getEntry(key);
 		if (entry == null) {
 			entry = getBlankEntry();
 			entry.setPrimaryKey(key);
+
+			blankEntries.put(key, timeToDelete);
 		}
 		return entry;
 	}
@@ -97,7 +150,8 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * @return <code>true</code> if the key is found in the table, <code>false</code> otherwise
 	 */
 	public boolean hasEntry(String key) {
-		return getTableInstance().getItem(getKey(key)) != null;
+		return cache.containsKey(key) ||
+				getTableInstance().getItem(getKey(key)) != null;
 	}
 
 	/**
@@ -107,7 +161,20 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 *              along with a matching setter.
 	 */
 	public void setEntry(EntryType entry) {
-		getTableInstance().putItem(entry);
+		String key = entry.getPrimaryKey();
+		var cached = cache.getOrDefault(key, null);
+		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
+
+		blankEntries.remove(key);
+
+		if (cached != null) {
+			cached.setTimeToDelete(timeToDelete);
+			cached.setEntry(entry);
+			cached.setDirty(true);
+		} else {
+			cached = new CacheTimeToDelete<>(timeToDelete, entry, true);
+			cache.put(key, cached);
+		}
 	}
 
 	/**
@@ -119,6 +186,8 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 */
 	public void deleteEntry(String key) {
 		getTableInstance().deleteItem(getKey(key));
+		blankEntries.remove(key);
+		cache.remove(key);
 	}
 
 	protected abstract EntryType getBlankEntry();

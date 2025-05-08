@@ -44,4 +44,9 @@ public final class GlobalLeaderboards extends AbstractDatabaseEntry {
 	public void setPrimaryKey(String key) {
 		leaderboardName = key;
 	}
+
+	@Override
+	public String getPrimaryKey() {
+		return getLeaderboardName();
+	}
 }

@@ -61,6 +61,11 @@ public class AuthTokenAccessor extends AbstractDatabaseAccessor<AuthTokenAccesso
 		public void setPrimaryKey(String key) {
 			setToken(username);
 		}
+
+		@Override
+		public String getPrimaryKey() {
+			return getToken();
+		}
 	}
 
 }

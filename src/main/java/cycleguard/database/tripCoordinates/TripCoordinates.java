@@ -56,4 +56,9 @@ public final class TripCoordinates extends AbstractDatabaseEntry {
 	public void setPrimaryKey(String key) {
 		setUsernameTimestamp(key);
 	}
+
+	@Override
+	public String getPrimaryKey() {
+		return getUsernameTimestamp();
+	}
 }

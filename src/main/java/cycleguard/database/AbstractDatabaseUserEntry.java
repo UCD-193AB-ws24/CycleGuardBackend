@@ -28,4 +28,9 @@ public abstract class AbstractDatabaseUserEntry extends AbstractDatabaseEntry {
 	public void setPrimaryKey(String key) {
 		setUsername(key);
 	}
+
+	@Override
+	public String getPrimaryKey() {
+		return getUsername();
+	}
 }

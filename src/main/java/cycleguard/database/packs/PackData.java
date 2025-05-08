@@ -62,6 +62,11 @@ public final class PackData extends AbstractDatabaseEntry {
 		setName(key);
 	}
 
+	@Override
+	public String getPrimaryKey() {
+		return name;
+	}
+
 	public int getMemberCount() {
 		return memberList.size();
 	}
