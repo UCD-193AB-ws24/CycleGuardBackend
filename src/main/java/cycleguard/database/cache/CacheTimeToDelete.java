@@ -3,15 +3,17 @@ package cycleguard.database.cache;
 import cycleguard.database.AbstractDatabaseEntry;
 
 public class CacheTimeToDelete<EntryType> {
-
 	private long timeToDelete;
 	private EntryType entry;
-	private boolean isDirty = false;
+	private boolean isDirty;
+	private int timesWritten;
+
 
 	public CacheTimeToDelete(long timeToDelete, EntryType entry, boolean isDirty) {
 		this.timeToDelete = timeToDelete;
 		this.entry = entry;
 		this.isDirty = isDirty;
+		if (isDirty) timesWritten=1;
 	}
 
 	public long getTimeToDelete() {
@@ -36,5 +38,18 @@ public class CacheTimeToDelete<EntryType> {
 
 	public void setDirty(boolean dirty) {
 		isDirty = dirty;
+	}
+
+	public void incrementTimesWritten() {
+		timesWritten++;
+	}
+
+	public boolean doWriteOverride() {
+		return timesWritten>=DatabaseCacheService.MAX_CACHE_WRITES;
+	}
+
+	public void resetTimesWritten() {
+		timesWritten=0;
+		isDirty=false;
 	}
 }

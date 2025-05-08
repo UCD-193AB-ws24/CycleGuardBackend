@@ -7,6 +7,7 @@ import cycleguard.database.cache.DatabaseCacheService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -125,6 +126,16 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 		return getTableInstance().getItem(getKey(key));
 	}
 
+	/**
+	 * Returns the entry in a table, given a {@link String}
+	 * {@link DynamoDbPartitionKey}. If the entry doesn't exist in the database,
+	 * return a blank entry instead.
+	 *
+	 * @param key Value of partition key of the object to access
+	 * @return Object of type {@link EntryType}: database object with that partition key<br>
+	 * Guaranteed to not return <code>null</code>
+	 */
+	@NonNull
 	public EntryType getEntryOrDefaultBlank(String key) {
 		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
 		if (blankEntries.containsKey(key)) {
@@ -171,6 +182,12 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 			cached.setTimeToDelete(timeToDelete);
 			cached.setEntry(entry);
 			cached.setDirty(true);
+			cached.incrementTimesWritten();
+
+			if (cached.doWriteOverride()) {
+				getTableInstance().putItem(cached.getEntry());
+				cached.resetTimesWritten();
+			}
 		} else {
 			cached = new CacheTimeToDelete<>(timeToDelete, entry, true);
 			cache.put(key, cached);
@@ -190,6 +207,12 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 		cache.remove(key);
 	}
 
+	/**
+	 * Returns a blank instance of the database entry,
+	 * of type {@link EntryType} extending {@link AbstractDatabaseEntry}.
+	 *
+	 * @return Blank {@link EntryType} of extending subclass
+	 */
 	protected abstract EntryType getBlankEntry();
 
 	/**
@@ -197,11 +220,4 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * @return Singleton instance of the {@link DynamoDbTable}
 	 */
 	protected abstract DynamoDbTable<EntryType> getTableInstance();
-
-	public List<EntryType> batchGetItem() {
-
-//		client.batchGetItem()
-//		getTableInstance().
-		return null;
-	}
 }
