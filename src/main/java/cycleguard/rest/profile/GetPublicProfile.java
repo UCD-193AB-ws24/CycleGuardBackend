@@ -3,6 +3,7 @@ package cycleguard.rest.profile;
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.accessor.UserProfileAccessor;
+import cycleguard.database.friendsList.FriendsListService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -23,6 +24,8 @@ public final class GetPublicProfile {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private UserProfileAccessor userProfileAccessor;
+	@Autowired
+	private FriendsListService friendsListService;
 
 	@GetMapping("/profile/getPublicProfile/{username}")
 	public UserProfile getProfile(@RequestHeader("Token") String token, HttpServletResponse response,
@@ -30,11 +33,15 @@ public final class GetPublicProfile {
 		String curUsername = accessTokenManager.getUsernameFromToken(token);
 
 		UserProfile profile = userProfileAccessor.getEntryOrDefaultBlank(username);
-		if (!profile.getIsPublic() && !username.equals(curUsername)) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			return null;
+		if (profile.getIsPublic() || username.equals(curUsername)) {
+			return profile;
 		}
 
-		return profile;
+		if (friendsListService.getFriendsList(curUsername).getFriends().contains(username)) {
+			return profile;
+		}
+
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		return null;
 	}
 }
