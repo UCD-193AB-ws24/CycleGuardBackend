@@ -3,15 +3,28 @@ package cycleguard.database.friendsList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service wrapper for retrieving and modifying {@link FriendsList}.
+ */
 @Service
 public class FriendsListService {
 	@Autowired
 	private FriendsListAccessor friendsListAccessor;
 
+	/**
+	 * Return the friends list.
+	 * @param username Username of querying user
+	 * @return {@link FriendsList} of user
+	 */
 	public FriendsList getFriendsList(String username) {
 		return friendsListAccessor.getEntryOrDefaultBlank(username);
 	}
 
+	/**
+	 * Befriend a pair of users.
+	 * @param username First user
+	 * @param friendUsername Second user
+	 */
 	void addFriend(String username, String friendUsername) {
 		FriendsList myFriendsList = getFriendsList(username);
 		FriendsList otherFriendsList = getFriendsList(friendUsername);
@@ -25,6 +38,11 @@ public class FriendsListService {
 		friendsListAccessor.setEntry(otherFriendsList);
 	}
 
+	/**
+	 * Unfriend a pair of users.
+	 * @param username First user
+	 * @param friendUsername Second user
+	 */
 	public void removeFriend(String username, String friendUsername) {
 		FriendsList myFriendsList = getFriendsList(username);
 		FriendsList otherFriendsList = getFriendsList(friendUsername);

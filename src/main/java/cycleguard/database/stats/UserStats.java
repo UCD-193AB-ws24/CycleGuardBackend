@@ -6,11 +6,17 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import java.time.Instant;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's stats.
- *
+ * {@link DynamoDbBean} linking a username to that user's full statistics.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link UserStats#accountCreationTime} - Seconds after epoch when account was created</li>
+ *     <li>{@link UserStats#totalDistance} - Total distance traveled by the user</li>
+ *     <li>{@link UserStats#totalTime} - Total time user spent biking</li>
+ *     <li>{@link UserStats#bestPackGoalProgress} - Best pack goal progress achieved by any of user's previous or current packs</li>
+ *     <li>{@link UserStats#lastRideDay} - Highest seconds after epoch when user took a ride</li>
+ *     <li>{@link UserStats#rideStreak} - Current daily ride streak of user</li>
+ *     <li>{@link UserStats#bestStreak} - Best daily ride streak of user</li>
  * </ul>
  */
 @DynamoDbBean

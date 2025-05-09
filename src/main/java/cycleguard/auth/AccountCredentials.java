@@ -1,5 +1,8 @@
 package cycleguard.auth;
 
+/**
+ * Plaintext username and password.
+ */
 public class AccountCredentials {
 	private String username, password;
 

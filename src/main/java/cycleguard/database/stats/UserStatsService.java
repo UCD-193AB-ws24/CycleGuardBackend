@@ -1,5 +1,7 @@
 package cycleguard.database.stats;
 
+import cycleguard.database.RideProcessable;
+import cycleguard.database.achievements.AchievementInfo;
 import cycleguard.database.rides.ProcessRideService;
 import cycleguard.util.StringDoubles;
 import cycleguard.util.TimeUtil;
@@ -10,8 +12,11 @@ import java.time.Instant;
 
 import static cycleguard.util.StringDoubles.toDouble;
 
+/**
+ * Service wrapper for retrieving and modifying {@link UserStats}.
+ */
 @Service
-public class UserStatsService {
+public class UserStatsService implements RideProcessable {
 	@Autowired
 	private UserStatsAccessor userStatsAccessor;
 
@@ -19,12 +24,25 @@ public class UserStatsService {
 		return userStatsAccessor.getEntryOrDefaultBlank(username);
 	}
 
+	/**
+	 * Creates a new user and adds to database.
+	 * @param username Username of user
+	 * @return New {@link UserStats}
+	 */
 	public UserStats createUser(String username) {
 		UserStats userStats = new UserStats();
 		userStats.setUsername(username);
 		userStatsAccessor.setEntry(userStats);
 		return userStats;
 	}
+
+	/**
+	 * Sets ride streak and total distance and time of a user's stats.
+	 * @param username User who completed ride
+	 * @param rideInfo Stats of completed ride
+	 * @param now Seconds since epoch when ride was completed
+	 */
+	@Override
 	public void processNewRide(String username, ProcessRideService.RideInfo rideInfo, Instant now) {
 		now = TimeUtil.getAdjustedInstant(now);
 
@@ -50,6 +68,10 @@ public class UserStatsService {
 		userStatsAccessor.setEntry(stats);
 	}
 
+	/**
+	 * Saves a {@link UserStats} to database.
+	 * @param userStats Object to save to database
+	 */
 	public void setEntry(UserStats userStats) {
 		userStatsAccessor.setEntry(userStats);
 	}

@@ -6,6 +6,18 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import static cycleguard.util.StringDoubles.toDouble;
 
+/**
+ * {@link DynamoDbBean} ride history of one single ride.
+ * <br>
+ *
+ * <ul>
+ *     <li>{@link SingleRideHistory#distance} - Distance traveled</li>
+ *     <li>{@link SingleRideHistory#calories} - Calories burned</li>
+ *     <li>{@link SingleRideHistory#time} - Minutes biked</li>
+ *     <li>{@link SingleRideHistory#averageAltitude} - Average elevation of sensor</li>
+ *     <li>{@link SingleRideHistory#climb} - Accumulation of positive elevation changes</li>
+ * </ul>
+ */
 @DynamoDbBean
 public final class SingleRideHistory {
 	public SingleRideHistory() {}

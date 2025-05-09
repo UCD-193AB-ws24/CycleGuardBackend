@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's week history.
- *
+ * {@link DynamoDbBean} linking a username to that user's trip history.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link TripHistory#timestampTripHistoryMap} - Maps ride timestamps to {@link SingleRideHistory} entries</li>
  * </ul>
  */
 @DynamoDbBean

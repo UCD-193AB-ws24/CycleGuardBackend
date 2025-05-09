@@ -13,6 +13,9 @@ import java.util.Map;
 
 import static cycleguard.database.rides.ProcessRideService.RideInfo;
 
+/**
+ * Service wrapper for retrieving and modifying {@link PackGoal}.
+ */
 @Service
 class PackGoalService {
 	private static final String GOAL_DISTANCE = "distance", GOAL_TIME = "time";
@@ -23,6 +26,12 @@ class PackGoalService {
 	@Autowired
 	private AchievementInfoService achievementInfoService;
 
+	/**
+	 * Updates contributions from a user towards the pack's current goal.
+	 * @param username Username to update
+	 * @param packData Data of current pack
+	 * @param rideInfo Current ride information
+	 */
 	void updateContribution(String username, PackData packData, RideInfo rideInfo) {
 		PackGoal packGoal = packData.getPackGoal();
 		if (!packGoal.isActive()) return;
@@ -46,6 +55,17 @@ class PackGoalService {
 		achievementInfoService.processPackGoalProgress(packData);
 	}
 
+	/**
+	 * Sets the current goal of the pack. Does not write back to database.
+	 * @param packData Data of pack
+	 * @param durationSeconds Duration of new pack goal
+	 * @param goalField Distance or time
+	 * @param goalAmount Total amount to complete goal
+	 * @return 200 on success<br>
+	 * 400 on malformed request<br>
+	 * 401 if user is not pack owner<br>
+	 * 404 if pack not existent
+	 */
 	int setGoal(PackData packData, long durationSeconds, String goalField, long goalAmount) {
 		PackGoal packGoal = packData.getPackGoal();
 
@@ -66,16 +86,11 @@ class PackGoalService {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Clear the pack's current goal. Does not write back to database.
+	 * @param packData Data of pack
+	 */
 	void clearGoal(PackData packData) {
 		packData.setPackGoal(new PackGoal());
-
-//		PackGoal packGoal = packData.getPackGoal();
-//		packGoal.getContributionMap().clear();
-//		packGoal.setActive(false);
-//		packGoal.setGoalAmount(0);
-//		packGoal.setGoalField("");
-//
-//		packGoal.setStartTime(0);
-//		packGoal.setEndTime(0);
 	}
 }

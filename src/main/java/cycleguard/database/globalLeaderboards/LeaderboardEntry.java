@@ -3,6 +3,15 @@ package cycleguard.database.globalLeaderboards;
 import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
+/**
+ * {@link DynamoDbBean} of an entry on a leaderboard. No primary key.
+ * <br>
+ *
+ * <ul>
+ *     <li>{@link LeaderboardEntry#username} - User which entry belongs to</li>
+ *     <li>{@link LeaderboardEntry#value} - Distance or time value of user, depending on {@link GlobalLeaderboards field}</li>
+ * </ul>
+ */
 @DynamoDbBean
 public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 	public String username;

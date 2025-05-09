@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's week history.
- *
+ * {@link DynamoDbBean} linking a username to that user's received and pending friend requests.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link FriendRequestList#receivedFriendRequests} - List of usernames who sent a request</li>
+ *     <li>{@link FriendRequestList#receivedFriendRequests} - List of usernames pending a request response</li>
  * </ul>
  */
 @DynamoDbBean

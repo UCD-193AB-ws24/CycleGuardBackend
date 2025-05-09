@@ -4,6 +4,7 @@ import cycleguard.database.RideProcessable;
 import cycleguard.database.accessor.UserCredentialsAccessor;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
+import cycleguard.database.achievements.AchievementInfo;
 import cycleguard.database.rides.ProcessRideService.RideInfo;
 import cycleguard.util.TimeUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,9 @@ import java.util.List;
 
 import static cycleguard.database.packs.PackInvitesAccessor.*;
 
+/**
+ * Service wrapper for retrieving and modifying {@link PackData}.
+ */
 @Service
 public class PackDataService implements RideProcessable {
 	@Autowired
@@ -27,6 +31,11 @@ public class PackDataService implements RideProcessable {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	/**
+	 * Retrieves a pack from its pack name.
+	 * @param packName Name of pack to retrieve
+	 * @return {@link PackData}, null if doesn't exist
+	 */
 	public PackData getPack(String packName) {
 		PackData packData = packDataAccessor.getEntry(packName);
 		if (packData==null) return null;
@@ -39,10 +48,24 @@ public class PackDataService implements RideProcessable {
 		return packData;
 	}
 
-
+	/**
+	 * Return if or not a pack exists.
+	 * @param packName Name of pack
+	 * @return If the pack exists
+	 */
 	public boolean packExists(String packName) {
 		return packDataAccessor.hasEntry(packName);
 	}
+
+	/**
+	 * Create a new pack. Returns an HTTP status code, regarding status.
+	 * @param username Username of pack creator
+	 * @param packName Name of pack
+	 * @param password Password of pack, to enter the pack
+	 * @return 200 on success<br>
+	 * 400 on malformed pack name<br>
+	 * 409 on conflict with another pack name, or if user already in another pack
+	 */
 	public int createPack(String username, String packName, String password) {
 		packName = packName.trim();
 		if (packName.isEmpty()) return HttpServletResponse.SC_BAD_REQUEST;
@@ -67,8 +90,17 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
-//	Delete pack?
-
+	/**
+	 * Join a pack. Updates pack and profile information.
+	 * @param username Username of joinee
+	 * @param packName Name of pack
+	 * @param password Password of pack, to enter the pack
+	 * @return 200 on success, or already in pack<br>
+	 * 400 on malformed pack name<br>
+	 * 401 on password mismatch<br>
+	 * 404 if pack not existent<br>
+	 * 409 if user already in another pack
+	 */
 	public int joinPack(String username, String packName, String password) {
 		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty()) {
@@ -106,6 +138,14 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Leave a pack as a non-owner pack member.
+	 * @param username Username of leaving user
+	 * @return 200 on success, or already not in pack<br>
+	 * 400 on malformed pack name<br>
+	 * 404 if pack not existent<br>
+	 * 409 if user is pack owner
+	 */
 	public int leavePack(String username) {
 		UserProfile userProfile = userProfileAccessor.getEntry(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -126,6 +166,15 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Leave a pack as the owner of the pack.
+	 * @param username Username of leaving owner
+	 * @param newOwner Username of new owner
+	 * @return 200 on success, or already not in pack<br>
+	 * 400 on malformed pack name<br>
+	 * 404 if pack not existent<br>
+	 * 409 if user is pack owner
+	 */
 	public int leavePackAsOwner(String username, String newOwner) {
 		UserProfile userProfile = userProfileAccessor.getEntry(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -168,6 +217,17 @@ public class PackDataService implements RideProcessable {
 		packDataAccessor.setEntry(packData);
 	}
 
+	/**
+	 * Set the current pack goal.
+	 * @param username User performing action
+	 * @param durationSeconds Duration of new pack goal
+	 * @param goalField Distance or time
+	 * @param goalAmount Total amount to complete goal
+	 * @return 200 on success<br>
+	 * 400 on malformed request<br>
+	 * 401 if user is not pack owner<br>
+	 * 404 if pack not existent
+	 */
 	public int setGoal(String username, long durationSeconds, String goalField, long goalAmount) {
 		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -181,6 +241,13 @@ public class PackDataService implements RideProcessable {
 		return res;
 	}
 
+	/**
+	 * Cancels the current pack goal.
+	 * @param username User performing action
+	 * @return 200 on success<br>
+	 * 401 if user is not pack owner<br>
+	 * 404 if pack not existent
+	 */
 	public int cancelCurrentGoal(String username) {
 		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -203,6 +270,14 @@ public class PackDataService implements RideProcessable {
 	private UserCredentialsAccessor userCredentialsAccessor;
 	@Autowired
 	private PackInvitesAccessor packInvitesAccessor;
+
+	/**
+	 * Invites a user to the pack.
+	 * @param username User performing action
+	 * @param userToInvite User being invited
+	 * @return 200 on success or if already invited<br>
+	 * 404 if pack not existent
+	 */
 	public int inviteUser(String username, String userToInvite) {
 		if (!userCredentialsAccessor.hasEntry(userToInvite))
 			return HttpServletResponse.SC_NOT_FOUND;
@@ -236,10 +311,27 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Joins the pack as an invited user.
+	 * @param username User accepting invite
+	 * @param packName Pack to join
+	 * @return 200 on success, or already in pack<br>
+	 * 400 on malformed pack name<br>
+	 * 401 on password mismatch<br>
+	 * 404 if pack not existent<br>
+	 * 409 if user already in another pack
+	 */
 	public int acceptInvite(String username, String packName) {
 		return joinPack(username, packName, "");
 	}
 
+	/**
+	 * Cancels a current pack invitation.
+	 * @param username User performing action
+	 * @param otherUser User with invitation
+	 * @return 200 on success or already cancelled<br>
+	 * 404 if pack not existent
+	 */
 	public int cancelInvite(String username, String otherUser) {
 		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -251,6 +343,13 @@ public class PackDataService implements RideProcessable {
 		return declineInvite(otherUser, packName);
 	}
 
+	/**
+	 * Declines a current pack invitation
+	 * @param username User performing action
+	 * @param packName Pack invitation to decline
+	 * @return 200 on success or if already declined<br>
+	 * 404 if pack not existent
+	 */
 	public int declineInvite(String username, String packName) {
 		PackInvites packInvites = packInvitesAccessor.getEntryOrDefaultBlank(username);
 		if (!packInvites.getInvites().contains(packName)) return HttpServletResponse.SC_OK;
@@ -265,6 +364,15 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Changes the pack's owner.
+	 * @param username Owner performing action
+	 * @param newOwner New owner
+	 * @return 200 on success<br>
+	 * 401 if user is not the current owner
+	 * 404 if pack not existent
+	 * 409 if username equals new owner, or new owner not in members list
+	 */
 	public int changeOwner(String username, String newOwner) {
 		UserProfile userProfile = userProfileAccessor.getEntry(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())
@@ -287,6 +395,15 @@ public class PackDataService implements RideProcessable {
 		return HttpServletResponse.SC_OK;
 	}
 
+	/**
+	 * Removes a user from the pack.
+	 * @param username Owner performing action
+	 * @param user User to kick
+	 * @return 200 on success, or if user akready kicked<br>
+	 * 401 if user is not the current owner
+	 * 404 if pack not existent
+	 * 409 if username equals user to kick, or user not in pack
+	 */
 	public int kickUser(String username, String user) {
 		UserProfile userProfile = userProfileAccessor.getEntry(username);
 		if (userProfile.getPack() == null || userProfile.getPack().isEmpty())

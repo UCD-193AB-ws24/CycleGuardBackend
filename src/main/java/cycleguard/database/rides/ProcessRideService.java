@@ -15,6 +15,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service wrapper for processing a new submitted ride.
+ * Call {@link ProcessRideService#processNewRide} to fully process a new ride,
+ * updating every related database entry.
+ */
 @Service
 public class ProcessRideService {
 	@Autowired
@@ -32,6 +37,12 @@ public class ProcessRideService {
 	@Autowired
 	private PackDataService packDataService;
 
+	/**
+	 * Fully processes a single ride, updating all related database entries.
+	 * @param username User who took the ride
+	 * @param rideInfo Information of the ride
+	 * @return Seconds since epoch that ride was taken - used for {@link TripCoordinatesService}
+	 */
 	public long processNewRide(String username, RideInfo rideInfo) {
 		Instant now = Instant.now();
 		weekHistoryService.processNewRide(username, rideInfo, now);
@@ -45,6 +56,16 @@ public class ProcessRideService {
 		return TimeUtil.getCurrentSecond(now);
 	}
 
+	/**
+	 * Information for a single ride.
+	 * <ul>
+	 *     <li>{@link RideInfo#distance} - Distance traveled during ride</li>
+	 *     <li>{@link RideInfo#calories} - Calories burned during ride</li>
+	 *     <li>{@link RideInfo#time} - Time spent riding</li>
+	 *     <li>{@link RideInfo#climb} - Accumulation of positive altitude changes during ride</li>
+	 *     <li>{@link RideInfo#averageAltitude} - Average elevation during ride</li>
+	 * </ul>
+	 */
 	public static final class RideInfo {
 		public double distance, calories, time, climb, averageAltitude;
 		public List<String> latitudes=new ArrayList<>(), longitudes=new ArrayList<>();

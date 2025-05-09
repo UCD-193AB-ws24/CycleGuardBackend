@@ -1,6 +1,7 @@
 package cycleguard.database.packs;
 
 import cycleguard.database.AbstractDatabaseEntry;
+import cycleguard.database.accessor.AuthTokenAccessor;
 import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
@@ -10,10 +11,15 @@ import java.util.TreeMap;
 
 /**
  * {@link DynamoDbBean} linking a pack to its current goal.
- *
  * <br>
+ *
  * <ul>
- *     <li></li>
+ *     <li>{@link PackGoal#contributionMap} - Maps usernames to contribution, as a String</li>
+ *     <li>{@link PackGoal#active} - If a goal is currently active or not</li>
+ *     <li>{@link PackGoal#goalField} - Field to track, either <code>distance</code> or <code>time</code></li>
+ *     <li>{@link PackGoal#startTime} - Start time of the goal, in seconds after epoch</li>
+ *     <li>{@link PackGoal#endTime} - Start time of the goal, in seconds after epoch</li>
+ *     <li>{@link PackGoal#goalAmount} - Goal field of the pack</li>
  * </ul>
  */
 @DynamoDbBean

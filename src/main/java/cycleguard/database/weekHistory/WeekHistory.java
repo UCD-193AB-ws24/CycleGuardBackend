@@ -1,7 +1,9 @@
 package cycleguard.database.weekHistory;
 
 import cycleguard.database.AbstractDatabaseUserEntry;
+import cycleguard.database.SingleRideHistory;
 import cycleguard.database.rides.ProcessRideService;
+import cycleguard.database.tripHistory.TripHistory;
 import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
@@ -12,10 +14,10 @@ import static cycleguard.util.StringDoubles.toDouble;
 
 /**
  * {@link DynamoDbBean} linking a username to that user's week history.
- *
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link WeekHistory#dayHistoryMap} - Maps day timestamps to {@link cycleguard.database.SingleRideHistory} entries</li>
  * </ul>
  */
 @DynamoDbBean

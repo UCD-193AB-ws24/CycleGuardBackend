@@ -2,6 +2,7 @@ package cycleguard.database.packs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import cycleguard.database.AbstractDatabaseEntry;
+import cycleguard.database.accessor.AuthTokenAccessor;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -10,10 +11,15 @@ import java.util.List;
 
 /**
  * {@link DynamoDbBean} linking a pack to its data.
- *
  * <br>
+ *
  * <ul>
- *     <li></li>
+ *     <li>Primary key: {@link PackData#name} - Name of pack</li>
+ *     <li>{@link PackData#hashedPassword} - Encrypted password of goal, used to join</li>
+ *     <li>{@link PackData#owner} - Username of the pack's owner</li>
+ *     <li>{@link PackData#memberList} - List of usernames that are members of the pack, including the owner</li>
+ *     <li>{@link PackData#invites} - Users currently invited to the pack</li>
+ *     <li>{@link PackData#packGoal} - Current {@link PackGoal} of pack</li>
  * </ul>
  */
 @JsonIgnoreProperties("hashedPassword")

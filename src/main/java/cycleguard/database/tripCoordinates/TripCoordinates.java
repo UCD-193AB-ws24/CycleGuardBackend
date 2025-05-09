@@ -8,11 +8,13 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 import java.util.List;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's week history.
- *
+ * {@link DynamoDbBean} linking a username and a timestamp to lists of latitudes and longitudes.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>Primary key: {@link TripCoordinates#usernameTimestamp} - Username concatenated to timestamp by an underscore</li>
+ *     <li>{@link TripCoordinates#latitudes} - List of the trip's latitudes</li>
+ *     <li>{@link TripCoordinates#longitudes} - List of the trip's longitudes</li>
  * </ul>
  */
 @DynamoDbBean

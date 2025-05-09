@@ -2,6 +2,7 @@ package cycleguard.database.globalLeaderboards;
 
 import cycleguard.database.AbstractDatabaseEntry;
 import cycleguard.database.AbstractDatabaseUserEntry;
+import cycleguard.database.friendsList.FriendRequestList;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -11,11 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's stats.
- *
+ * {@link DynamoDbBean} linking a username to that user's received and pending friend requests.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link GlobalLeaderboards#leaderboardName} - Name of leaderboard: <code>distance</code> or <code>time</code></li>
+ *     <li>{@link GlobalLeaderboards#entries} - List of {@link LeaderboardEntry} on the current leaderboard</li>
  * </ul>
  */
 @DynamoDbBean

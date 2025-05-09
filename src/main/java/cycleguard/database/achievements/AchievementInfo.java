@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * {@link DynamoDbBean} linking a username to that user's basic data.
- *
+ * {@link DynamoDbBean} linking a username to that user's achievement progress.
  * <br>
+ *
  * <ul>
- *     <li>cycleCoins - number of CycleCoins the user has.</li>
+ *     <li>{@link AchievementInfo#achievementProgressMap} - Maps achievement ID to {@link AchievementProgress}</li>
  * </ul>
  */
 @DynamoDbBean
@@ -26,6 +26,15 @@ public final class AchievementInfo extends AbstractDatabaseUserEntry {
 		this.achievementProgressMap = achievementProgressMap;
 	}
 
+	/**
+	 * {@link DynamoDbBean} of a user's progress on one specific achievement.
+	 * <br>
+	 *
+	 * <ul>
+	 *     <li>{@link AchievementProgress#currentProgress} - Integer value of user's current progress towards a goal</li>
+	 *     <li>{@link AchievementProgress#complete} - If the achievement is complete or not</li>
+	 * </ul>
+	 */
 	@DynamoDbBean
 	public static final class AchievementProgress {
 		private long currentProgress;
