@@ -29,10 +29,11 @@ public class AuthTokenAccessor extends AbstractDatabaseAccessor<AuthTokenAccesso
 
 	/**
 	 * {@link DynamoDbBean} linking an authentication token into a username.
-	 *
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>username - Username of user linked to authentication token.</li>
+	 *     <li>Primary key: {@link AuthToken#token} - Authentication token belonging to username</li>
+	 *     <li>{@link AuthToken#username} - Username of user linked to authentication token</li>
 	 * </ul>
 	 */
 	@DynamoDbBean

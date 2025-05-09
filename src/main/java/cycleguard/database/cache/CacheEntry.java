@@ -1,15 +1,13 @@
 package cycleguard.database.cache;
 
-import cycleguard.database.AbstractDatabaseEntry;
-
-public class CacheTimeToDelete<EntryType> {
+public class CacheEntry<EntryType> {
 	private long timeToDelete;
 	private EntryType entry;
 	private boolean isDirty;
 	private int timesWritten;
 
 
-	public CacheTimeToDelete(long timeToDelete, EntryType entry, boolean isDirty) {
+	public CacheEntry(long timeToDelete, EntryType entry, boolean isDirty) {
 		this.timeToDelete = timeToDelete;
 		this.entry = entry;
 		this.isDirty = isDirty;

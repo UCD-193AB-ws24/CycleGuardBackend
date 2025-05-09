@@ -28,12 +28,12 @@ public class HealthInfoAccessor extends AbstractDatabaseAccessor<HealthInfo> {
 
 	/**
 	 * {@link DynamoDbBean} linking a username to that user's health data.
-	 *
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>{@link HealthInfo#heightInches} - Height of user, in inches.</li>
-	 *     <li>{@link HealthInfo#weightPounds} - Weight of user, in pounds.</li>
-	 *     <li>{@link HealthInfo#ageYears} - Age of user, in years.</li>
+	 *     <li>{@link HealthInfo#heightInches} - Height of user, in inches</li>
+	 *     <li>{@link HealthInfo#weightPounds} - Weight of user, in pounds</li>
+	 *     <li>{@link HealthInfo#ageYears} - Age of user, in years</li>
 	 * </ul>
 	 */
 	@DynamoDbBean

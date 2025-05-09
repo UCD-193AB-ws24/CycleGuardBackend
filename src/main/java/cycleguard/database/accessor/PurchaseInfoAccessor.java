@@ -31,12 +31,14 @@ public class PurchaseInfoAccessor extends AbstractDatabaseAccessor<PurchaseInfoA
 
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's health data.
-	 *
+	 * {@link DynamoDbBean} linking a username to that user's shop-related data, and owned items.
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>{@link PurchaseInfo#cycleCoins} - Number of CycleCoins user has.</li>
-	 *     <li>{@link PurchaseInfo#themesOwned} - List of purchased themes ["Teal", "Lime", ...].</li>
+	 *     <li>{@link PurchaseInfo#cycleCoins} - Number of owned CycleCoins</li>
+	 *     <li>{@link PurchaseInfo#themesOwned} - List of owned themes, as {@link String}s</li>
+	 *     <li>{@link PurchaseInfo#miscOwned} - List of owned miscellaneous items, as {@link String}s</li>
+	 *     <li>{@link PurchaseInfo#iconsOwned} - List of owned user icon, as {@link String}s</li>
 	 * </ul>
 	 */
 	@DynamoDbBean

@@ -58,13 +58,16 @@ public class UserProfileAccessor extends AbstractDatabaseAccessor<UserProfile> {
 	}
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's profile.
-	 *
+	 * {@link DynamoDbBean} linking a username to that user's profile information.
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>{@link UserProfile#displayName} - Height of user, in inches.</li>
-	 *     <li>{@link UserProfile#bio} - Height of user, in inches.</li>
-	 * </ul>
+	 *     <li>{@link UserProfile#displayName} - Custom display name of user: not necessarily username</li>
+	 *     <li>{@link UserProfile#bio} - Custom biography/description of user</li>
+	 *     <li>{@link UserProfile#pack} - User's current pack. getBlankEntry sets pack to empty string, but defaults to null.</li>
+	 *     <li>{@link UserProfile#isPublic} - If the user's profile is publicly viewable.</li>
+	 *     <li>{@link UserProfile#isNewAccount} - If the account is new and should display a tutorial on startup.</li>
+	 *     <li>{@link UserProfile#profileIcon} - Name of profile icon used by user.</li>
 	 */
 	@DynamoDbBean
 	public static final class UserProfile extends AbstractDatabaseUserEntry {

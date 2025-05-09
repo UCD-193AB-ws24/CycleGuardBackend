@@ -27,11 +27,14 @@ public class UserDailyGoalAccessor extends AbstractDatabaseAccessor<UserDailyGoa
 
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's basic data.
-	 *
+	 * {@link DynamoDbBean} linking a username to that user's daily goals.<br>
+	 * Data is stored as Strings instead of doubles.
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>cycleCoins - number of CycleCoins the user has.</li>
+	 *     <li>{@link UserDailyGoal#distance} - User's daily distance goal</li>
+	 *     <li>{@link UserDailyGoal#time} - User's daily distance time</li>
+	 *     <li>{@link UserDailyGoal#calories} - User's daily distance calories</li>
 	 * </ul>
 	 */
 	@DynamoDbBean

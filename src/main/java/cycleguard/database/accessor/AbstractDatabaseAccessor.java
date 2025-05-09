@@ -2,7 +2,7 @@ package cycleguard.database.accessor;
 
 import cycleguard.database.AbstractDatabaseEntry;
 import cycleguard.database.AbstractDatabaseUserEntry;
-import cycleguard.database.cache.CacheTimeToDelete;
+import cycleguard.database.cache.CacheEntry;
 import cycleguard.database.cache.DatabaseCacheService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Wrapper for DynamoDB database access.
@@ -60,12 +57,31 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 
 	@Autowired
 	private DatabaseCacheService databaseCacheService;
-	private TreeMap<String, CacheTimeToDelete<EntryType>> cache = new TreeMap<>();
-	private TreeMap<String, Long> blankEntries = new TreeMap<>();
+
+	/**
+	 * Temporarily stores database entries to be retrieved later, to avoid excess database reads and writes.<br>
+	 * Maps {@link String} keys to {@link CacheEntry} values.<br>
+	 * Blank entries are stored for {@value DatabaseCacheService#CACHE_LIFETIME_MILLIS} ms.
+	 * @see CacheEntry
+	 */
+	private final TreeMap<String, CacheEntry<EntryType>> cache = new TreeMap<>();
+
+	/**
+	 * Collection of entries that are blank. Blank entries are stored for {@value DatabaseCacheService#BLANK_LIFETIME_MILLIS} ms.
+	 * @see CacheEntry
+	 */
+	private final TreeMap<String, Long> blankEntries = new TreeMap<>();
+
+	/**
+	 * Purges cache and blank entries that expired prior to the system clock's current value.
+	 * Called within {@link DatabaseCacheService} on an internal timer.
+	 * @param curSysTime System clock's current value, in milliseconds
+	 * @see System#currentTimeMillis()
+	 */
 	public void clearOldCacheEntries(long curSysTime) {
 		for (var entry : new ArrayList<>(cache.entrySet())) {
 			String key = entry.getKey();
-			CacheTimeToDelete<EntryType> cached = entry.getValue();
+			CacheEntry<EntryType> cached = entry.getValue();
 			if (cached.getTimeToDelete() <= curSysTime) {
 				if (cached.isDirty())
 					getTableInstance().putItem(cached.getEntry());
@@ -80,6 +96,10 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 				blankEntries.remove(key);
 		}
 	}
+
+	/**
+	 * Subscribes to the cache's timer upon accessor initialization.
+	 */
 	@PostConstruct
 	public void subscribeToCache() {
 		databaseCacheService.subscribe(this);
@@ -115,14 +135,14 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 */
 	public EntryType getEntry(String key) {
 		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
-		CacheTimeToDelete<EntryType> cacheEntry = cache.getOrDefault(key, null);
+		CacheEntry<EntryType> cacheEntry = cache.getOrDefault(key, null);
 		if (cacheEntry != null) {
 			cacheEntry.setTimeToDelete(timeToDelete);
 			return cacheEntry.getEntry();
 		}
 
 		EntryType entry = getTableInstance().getItem(getKey(key));
-		cache.put(key, new CacheTimeToDelete<>(timeToDelete, entry, false));
+		cache.put(key, new CacheEntry<>(timeToDelete, entry, false));
 		return getTableInstance().getItem(getKey(key));
 	}
 
@@ -137,13 +157,14 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 */
 	@NonNull
 	public EntryType getEntryOrDefaultBlank(String key) {
-		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
 		if (blankEntries.containsKey(key)) {
 			EntryType entry = getBlankEntry();
 			entry.setPrimaryKey(key);
-			blankEntries.put(key, timeToDelete);
+			long cacheTimeDelete = System.currentTimeMillis() + DatabaseCacheService.BLANK_LIFETIME_MILLIS;
+			blankEntries.put(key, cacheTimeDelete);
 			return entry;
 		}
+		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
 		EntryType entry = getEntry(key);
 		if (entry == null) {
 			entry = getBlankEntry();
@@ -189,7 +210,7 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 				cached.resetTimesWritten();
 			}
 		} else {
-			cached = new CacheTimeToDelete<>(timeToDelete, entry, true);
+			cached = new CacheEntry<>(timeToDelete, entry, true);
 			cache.put(key, cached);
 		}
 	}

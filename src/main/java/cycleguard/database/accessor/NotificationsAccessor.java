@@ -30,14 +30,12 @@ public class NotificationsAccessor extends AbstractDatabaseAccessor<Notification
 	}
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's profile.
-	 *
+	 * {@link DynamoDbBean} linking a username to that user's configured notifications.<br>
+	 * Stores only unique notifications - duplicates are ignored.
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>{@link NotificationList
-	 *    #displayName} - Height of user, in inches.</li>
-	 *     <li>{@link NotificationList
-	 *    #bio} - Height of user, in inches.</li>
+	 *     <li>{@link NotificationList#notifications} - List of set up {@link Notification}s</li>
 	 * </ul>
 	 */
 	@DynamoDbBean
@@ -60,6 +58,23 @@ public class NotificationsAccessor extends AbstractDatabaseAccessor<Notification
 		}
 	}
 
+	/**
+	 * {@link DynamoDbBean} of one single user-configured notification, stored within {@link NotificationList}.<br>
+	 * Two {@link Notification}s are equal if they are equivalent in all fields.
+	 * <br>
+	 *
+	 *
+	 * <ul>
+	 *     <li>{@link Notification#title} - Name of notification</li>
+	 *     <li>{@link Notification#body} - Description of notification</li>
+	 *     <li>{@link Notification#hour} - Hour of day to show notification</li>
+	 *     <li>{@link Notification#minute} - Minute of hour to show notification</li>
+	 *     <li>{@link Notification#frequency} - Frequency of notification.
+	 *          Values are: 0-2 --> daily/weekly/one time</li>
+	 *     <li>{@link Notification#dayOfWeek} - Day of week to show notification. Values are: 0-6</li>
+	 *     <li>{@link Notification#month} - Month to show notifications, for one time notifications</li>
+	 * </ul>
+	 */
 	@DynamoDbBean
 	public static final class Notification {
 		private String title="", body="";

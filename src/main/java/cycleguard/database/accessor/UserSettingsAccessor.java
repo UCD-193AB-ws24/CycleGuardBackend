@@ -28,12 +28,12 @@ public class UserSettingsAccessor extends AbstractDatabaseAccessor<UserSettings>
 
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's health data.
-	 *
+	 * {@link DynamoDbBean} linking a username to that user's customized settings.
 	 * <br>
+	 *
 	 * <ul>
-	 *     <li>{@link UserSettings#darkModeEnabled} - If user is using dark mode.</li>
-	 *     <li>{@link UserSettings#currentTheme} - Name of user's current theme.</li>
+	 *     <li>{@link UserSettings#darkModeEnabled} - If the user is in dark mode</li>
+	 *     <li>{@link UserSettings#currentTheme} - Name of user's currently used theme</li>
 	 * </ul>
 	 */
 	@DynamoDbBean
