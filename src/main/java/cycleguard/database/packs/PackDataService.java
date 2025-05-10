@@ -276,7 +276,7 @@ public class PackDataService implements RideProcessable {
 	 * @param username User performing action
 	 * @param userToInvite User being invited
 	 * @return 200 on success or if already invited<br>
-	 * 404 if pack not existent
+	 * 404 if users not existent
 	 */
 	public int inviteUser(String username, String userToInvite) {
 		if (!userCredentialsAccessor.hasEntry(userToInvite))

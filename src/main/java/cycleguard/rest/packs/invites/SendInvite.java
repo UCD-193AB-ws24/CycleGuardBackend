@@ -21,20 +21,21 @@ public final class SendInvite {
 	private PackInvitesAccessor packInvitesAccessor;
 
 	/**
-	 * Send a pack invite to a user.
-	 * @param usernameBody Username to send invite
+	 * Invites a user to the pack.
+	 * @param usernameBody User being invited
 	 * @return 200 on success or if already invited<br>
-	 * 404 if pack not existent
+	 * 404 if users not existent
 	 */
 	@PostMapping("/packs/sendInvite")
-	public int sendInvite(@RequestHeader("Token") String token, HttpServletResponse response,
+	public void sendInvite(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                @RequestBody @NonNull Username usernameBody) {
 		String username = accessTokenManager.getUsernameFromToken(token);
 		if (username == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			return HttpServletResponse.SC_UNAUTHORIZED;
+			return;
 		}
 
-		return packDataService.inviteUser(username, usernameBody.username);
+		int status = packDataService.inviteUser(username, usernameBody.username);
+		response.setStatus(status);
 	}
 }
