@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class KickUser {
 	@Autowired
@@ -22,6 +18,14 @@ public final class KickUser {
 	@Autowired
 	private PackDataService packDataService;
 
+	/**
+	 * Removes a user from the pack.
+	 * @param userToKick User to kick
+	 * @return 200 on success, or if user already kicked<br>
+	 * 401 if user is not the current owner
+	 * 404 if pack not existent
+	 * 409 if username equals user to kick, or user not in pack
+	 */
 	@PostMapping("/packs/kickUser")
 	public void kickUser(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull UserToKick userToKick) {

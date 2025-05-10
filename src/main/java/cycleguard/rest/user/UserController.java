@@ -23,6 +23,10 @@ public class UserController {
         this.userProfileAccessor = userProfileAccessor;
     }
 
+    /**
+     * Endpoint for retrieving every single user in the database.
+     * @return Non-null {@link UserProfileList} of all users
+     */
     @GetMapping("/all")
     public UserProfileList getAllUsers(@RequestHeader("Token") String token, HttpServletResponse response) {
         String username = accessTokenManager.getUsernameFromToken(token);

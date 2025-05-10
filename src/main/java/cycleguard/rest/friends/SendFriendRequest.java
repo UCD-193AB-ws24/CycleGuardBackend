@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class SendFriendRequest {
 	@Autowired
@@ -26,6 +22,11 @@ public final class SendFriendRequest {
 	@Autowired
 	private AccountService accountService;
 
+	/**
+	 * Endpoint to send a friend request.
+	 * @param singleUsername Username to send
+	 * @return Error message on fail, or OK
+	 */
 	@PostMapping("/friends/sendFriendRequest")
 	public String updateProfile(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull SingleUsername singleUsername) {

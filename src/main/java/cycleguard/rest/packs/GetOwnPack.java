@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class GetOwnPack {
 	@Autowired
@@ -24,6 +20,10 @@ public final class GetOwnPack {
 	@Autowired
 	private UserProfileAccessor userProfileAccessor;
 
+	/**
+	 * Retrieves user's current pack.
+	 * @return {@link PackData}, null if doesn't exist
+	 */
 	@GetMapping("/packs/getPack")
 	public PackData getPack(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);

@@ -2,7 +2,6 @@ package cycleguard.rest.friends;
 
 import cycleguard.auth.AccessTokenManager;
 import cycleguard.auth.AccountService;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.friendsList.FriendRequestService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class CancelFriendRequest {
 	@Autowired
@@ -25,6 +20,11 @@ public final class CancelFriendRequest {
 	@Autowired
 	private AccountService accountService;
 
+	/**
+	 * Endpoint to cancel a friend request.
+	 * @param singleUsername Username to cancel
+	 * @return Error message on fail, or OK
+	 */
 	@PostMapping("/friends/cancelFriendRequest")
 	public String updateProfile(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull SingleUsername singleUsername) {

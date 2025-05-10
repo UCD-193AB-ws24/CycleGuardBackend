@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class SetHealthInfo {
 	@Autowired
@@ -22,6 +18,11 @@ public final class SetHealthInfo {
 	@Autowired
 	private HealthInfoAccessor healthInfoAccessor;
 
+	/**
+	 * Endpoint to set health metrics.
+	 * @param healthInfo Health information to set
+	 * @return Error message on fail, or OK
+	 */
 	@PostMapping("/health/set")
 	public String setHealthInfo(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                                     @RequestBody @NonNull HealthInfo healthInfo) {

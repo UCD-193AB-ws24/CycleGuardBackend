@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class DeleteNotification {
 	@Autowired
@@ -26,6 +22,10 @@ public final class DeleteNotification {
 	@Autowired
 	private NotificationsAccessor notificationsAccessor;
 
+	/**
+	 * Endpoint to delete a custom notification.
+	 * @param notification Notification to delete
+	 */
 	@PostMapping("/notifications/deleteNotification")
 	public NotificationList deleteNotification(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                           @RequestBody @NonNull Notification notification) {

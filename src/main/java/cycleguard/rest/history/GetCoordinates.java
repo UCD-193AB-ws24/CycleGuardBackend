@@ -1,7 +1,6 @@
 package cycleguard.rest.history;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.tripCoordinates.TripCoordinates;
 import cycleguard.database.tripCoordinates.TripCoordinatesService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,10 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class GetCoordinates {
 	@Autowired
@@ -23,6 +18,10 @@ public final class GetCoordinates {
 	@Autowired
 	private TripCoordinatesService tripCoordinatesService;
 
+	/**
+	 * Endpoint to retrieve the coordinates of a previous ride.
+	 * @return {@link TripCoordinates} or null if non-existent
+	 */
 	@GetMapping("/history/getCoordinates/{timestamp}")
 	public TripCoordinates getWeekHistory(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                      @NonNull @PathVariable("timestamp") long timestamp) {

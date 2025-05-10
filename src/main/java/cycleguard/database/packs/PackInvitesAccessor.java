@@ -32,10 +32,11 @@ public class PackInvitesAccessor extends AbstractDatabaseAccessor<PackInvites> {
 
 
 	/**
-	 * {@link DynamoDbBean} linking a username to that user's health data.
+	 * {@link DynamoDbBean} linking a username to that user's pack invites.
 	 *
 	 * <br>
 	 * <ul>
+	 *     <li>{@link PackInvites#invites} - List of packs the user has been invited to</li>
 	 * </ul>
 	 */
 	@DynamoDbBean

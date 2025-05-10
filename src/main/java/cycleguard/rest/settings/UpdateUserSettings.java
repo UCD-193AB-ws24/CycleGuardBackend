@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static cycleguard.database.accessor.UserSettingsAccessor.UserSettings;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class UpdateUserSettings {
 	@Autowired
@@ -21,6 +17,11 @@ public final class UpdateUserSettings {
 	@Autowired
 	private UserSettingsAccessor userSettingsAccessor;
 
+	/**
+	 * Endpoint for editing a user's configured settings.
+	 * @param settings New settings
+	 * @return OK on success
+	 */
 	@PostMapping("/user/updateSettings")
 	public String updateSettings(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull UserSettings settings) {

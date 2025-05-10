@@ -1,20 +1,15 @@
 package cycleguard.rest.friends;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.friendsList.FriendRequestList;
 import cycleguard.database.friendsList.FriendRequestService;
-import cycleguard.database.friendsList.FriendsListService;
+import cycleguard.database.friendsList.FriendsList;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class GetFriendRequestList {
 	@Autowired
@@ -22,6 +17,10 @@ public final class GetFriendRequestList {
 	@Autowired
 	private FriendRequestService friendRequestService;
 
+	/**
+	 * Endpoint to retrieve a user's friend requests list.
+	 * @return Non-null {@link FriendRequestList}
+	 */
 	@GetMapping("/friends/getFriendRequestList")
 	public FriendRequestList getFriendsList(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);

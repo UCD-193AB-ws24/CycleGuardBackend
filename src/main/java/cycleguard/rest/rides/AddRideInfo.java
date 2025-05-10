@@ -12,10 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class AddRideInfo {
 	@Autowired
@@ -23,6 +19,11 @@ public final class AddRideInfo {
 	@Autowired
 	private ProcessRideService processRideService;
 
+	/**
+	 * Endpoint handling processing of a ride.
+	 * @param rideInfo Newly-completed ride to process
+	 * @return Seconds since epoch, used for trip coordinates
+	 */
 	@PostMapping("/rides/addRide")
 	public String getHealthInfo(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                 @RequestBody RideInfo rideInfo) {

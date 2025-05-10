@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Endpoint for a user to create an account.
- * Requires {@link AccountCredentials} as body.
- */
 @RestController
 public final class OwnedItems {
 	@Autowired
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private PurchaseInfoAccessor purchaseInfoAccessor;
-	@Autowired
-	private ItemInfoService itemInfoService;
 
+	/**
+	 * Legacy endpoint: return owned themes.
+	 * @return Non-null list of themes owned
+	 */
 	@GetMapping("/purchaseInfo/ownedItems")
 	public List<String> ownedItems(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);

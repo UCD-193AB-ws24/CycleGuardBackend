@@ -1,18 +1,16 @@
 package cycleguard.rest.purchases;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.auth.AccountCredentials;
 import cycleguard.database.accessor.PurchaseInfoAccessor;
 import cycleguard.database.achievements.AchievementInfoService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to create an account.
- * Requires {@link AccountCredentials} as body.
- */
 @RestController
 public final class BuyTheme {
 	@Autowired
@@ -20,10 +18,13 @@ public final class BuyTheme {
 	@Autowired
 	private PurchaseInfoAccessor purchaseInfoAccessor;
 	@Autowired
-	private ItemInfoService itemInfoService;
-	@Autowired
 	private AchievementInfoService achievementInfoService;
 
+	/**
+	 * Endpoint for purchasing a color theme.
+	 * @param itemToBuy Item to add to the user's items. Each item costs 10 CycleCoins.
+	 * @return OK or error code 409
+	 */
 	@PostMapping("/purchaseInfo/buyTheme")
 	public String buy(@RequestHeader("Token") String token, HttpServletResponse response,
 	                      @RequestBody @NonNull ItemToBuy itemToBuy) {

@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class SetPackGoal {
 	@Autowired
@@ -22,6 +18,14 @@ public final class SetPackGoal {
 	@Autowired
 	private PackDataService packDataService;
 
+	/**
+	 * Set the current pack goal.
+	 * @param newPackGoal Data of the pack's new goal
+	 * @return 200 on success<br>
+	 * 400 on malformed request<br>
+	 * 401 if user is not pack owner<br>
+	 * 404 if pack not existent
+	 */
 	@PostMapping("/packs/setPackGoal")
 	public void setPackGoal(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull NewPackGoal newPackGoal) {

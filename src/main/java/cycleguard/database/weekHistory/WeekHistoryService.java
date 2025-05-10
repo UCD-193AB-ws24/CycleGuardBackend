@@ -32,7 +32,7 @@ public class WeekHistoryService implements RideProcessable {
 	/**
 	 * Get the week history for a user. Guaranteed 7 or fewer entries.
 	 * @param username Username to retrieve history of
-	 * @return {@link WeekHistory} with length <= 7
+	 * @return {@link WeekHistory} with length less than or equal to 7
 	 */
 	public WeekHistory getWeekHistory(String username) {
 		Instant now = TimeUtil.getAdjustedInstant(Instant.now());

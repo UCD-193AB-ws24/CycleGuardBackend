@@ -344,7 +344,7 @@ public class PackDataService implements RideProcessable {
 	}
 
 	/**
-	 * Declines a current pack invitation
+	 * Declines a current pack invitation.
 	 * @param username User performing action
 	 * @param packName Pack invitation to decline
 	 * @return 200 on success or if already declined<br>
@@ -399,7 +399,7 @@ public class PackDataService implements RideProcessable {
 	 * Removes a user from the pack.
 	 * @param username Owner performing action
 	 * @param user User to kick
-	 * @return 200 on success, or if user akready kicked<br>
+	 * @return 200 on success, or if user already kicked<br>
 	 * 401 if user is not the current owner
 	 * 404 if pack not existent
 	 * 409 if username equals user to kick, or user not in pack

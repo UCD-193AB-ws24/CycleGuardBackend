@@ -10,12 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to log in.
- * Requires {@link AccountCredentials} as body.
- * <br>
- * Returns an authentication token that must be set in every request's header, with header key <code>Token</code>.
- */
 @RestController
 public final class Login {
 	@Autowired
@@ -26,7 +20,13 @@ public final class Login {
 	@Autowired
 	private AccessTokenManager accessTokenManager;
 
-
+	/**
+	 * Endpoint for a user to log in. Requires {@link AccountCredentials} as body.
+	 * Returns an authentication token that must be set in every request's header,
+	 * with header key <code>Token</code>.
+	 * @param credentials Plaintext username and password
+	 * @return Access token to put in headers, or INVALID
+	 */
 	@PostMapping("/account/login")
 	public String login(@RequestBody @NonNull AccountCredentials credentials) {
 		if (!accountService.isValidLogin(credentials)) return "INVALID";

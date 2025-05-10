@@ -1,9 +1,7 @@
 package cycleguard.rest.friends;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.auth.AccountService;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
-import cycleguard.database.friendsList.FriendRequestService;
+import cycleguard.database.friendsList.FriendsList;
 import cycleguard.database.friendsList.FriendsListService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class RemoveFriend {
 	@Autowired
@@ -24,6 +18,11 @@ public final class RemoveFriend {
 	@Autowired
 	private FriendsListService friendsListService;
 
+	/**
+	 * Endpoint to remove a friend.
+	 * @param singleUsername Username to remove
+	 * @return Error message on fail, or OK
+	 */
 	@PostMapping("/friends/removeFriend")
 	public String removeFriend(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull SingleUsername singleUsername) {

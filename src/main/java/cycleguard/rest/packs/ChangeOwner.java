@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class ChangeOwner {
 	@Autowired
@@ -22,6 +18,14 @@ public final class ChangeOwner {
 	@Autowired
 	private PackDataService packDataService;
 
+	/**
+	 * Changes the pack's owner.
+	 * @param newOwner New owner
+	 * @return 200 on success<br>
+	 * 401 if user is not the current owner
+	 * 404 if pack not existent
+	 * 409 if username equals new owner, or new owner not in members list
+	 */
 	@PostMapping("/packs/changeOwner")
 	public void changeOwner(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull NewOwner newOwner) {

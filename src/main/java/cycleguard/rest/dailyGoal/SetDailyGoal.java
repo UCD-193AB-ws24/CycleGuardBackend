@@ -1,21 +1,16 @@
 package cycleguard.rest.dailyGoal;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.accessor.UserDailyGoalAccessor;
 import cycleguard.database.accessor.UserDailyGoalAccessor.UserDailyGoal;
-import cycleguard.util.StringDoubles;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class SetDailyGoal {
 	@Autowired
@@ -23,6 +18,10 @@ public final class SetDailyGoal {
 	@Autowired
 	private AccessTokenManager accessTokenManager;
 
+	/**
+	 * Endpoint for a user to set a daily goal.
+	 * @param goal Goal to set the user's {@link UserDailyGoal} to
+	 */
 	@PostMapping("/daily/setDailyGoal")
 	public void setDailyGoal(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                  @RequestBody @NonNull UserDailyGoalInput goal) {

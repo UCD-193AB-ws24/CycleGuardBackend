@@ -1,7 +1,6 @@
 package cycleguard.rest.packs.invites;
 
 import cycleguard.auth.AccessTokenManager;
-import cycleguard.database.accessor.HealthInfoAccessor.HealthInfo;
 import cycleguard.database.packs.PackDataService;
 import cycleguard.database.packs.PackInvitesAccessor;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class SendInvite {
 	@Autowired
@@ -25,6 +20,12 @@ public final class SendInvite {
 	@Autowired
 	private PackInvitesAccessor packInvitesAccessor;
 
+	/**
+	 * Send a pack invite to a user.
+	 * @param usernameBody Username to send invite
+	 * @return 200 on success or if already invited<br>
+	 * 404 if pack not existent
+	 */
 	@PostMapping("/packs/sendInvite")
 	public int sendInvite(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                @RequestBody @NonNull Username usernameBody) {

@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import static cycleguard.database.accessor.PurchaseInfoAccessor.*;
+import static cycleguard.database.accessor.PurchaseInfoAccessor.PurchaseInfo;
 
 @RestController
 public class GetPurchaseInfo {
@@ -18,9 +16,11 @@ public class GetPurchaseInfo {
 	private AccessTokenManager accessTokenManager;
 	@Autowired
 	private PurchaseInfoAccessor purchaseInfoAccessor;
-	@Autowired
-	private ItemInfoService itemInfoService;
 
+	/**
+	 * Endpoint for retrieving purchase information: owned items split into categories, as well as CycleCoins.
+	 * @return Non-null {@link PurchaseInfo}
+	 */
 	@GetMapping("/purchaseInfo/getPurchaseInfo")
 	public PurchaseInfo getPurchaseInfo(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);

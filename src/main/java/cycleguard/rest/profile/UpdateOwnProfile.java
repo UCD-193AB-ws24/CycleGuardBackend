@@ -29,6 +29,10 @@ public final class UpdateOwnProfile {
 	@Autowired
 	private GlobalLeaderboardsService globalLeaderboardsService;
 
+	/**
+	 * Endpoint for updating the current user's profile.
+	 * @param userProfile New profile data to set. If parameter's pack is null, override using the current pack.
+	 */
 	@PostMapping("/profile/updateProfile")
 	public String updateProfile(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull UserProfile userProfile) {

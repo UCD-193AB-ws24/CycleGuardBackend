@@ -24,10 +24,14 @@ public final class CreateAccount {
 	private UserCredentialsAccessor userCredentialsAccessor;
 	@Autowired
 	private CheckUsername checkUsername;
-
 	@Autowired
 	private Login login;
 
+	/**
+	 * Creates an account and returns an access token, or returns DUPLICATE.
+	 * @param credentials Plaintext username and password
+	 * @return Access token to put in headers, or DUPLICATE
+	 */
 	@PostMapping("/account/create")
 	public String createAccount(@RequestBody @NonNull AccountCredentials credentials) {
 		if (checkUsername.checkUsername(credentials)) return "DUPLICATE";

@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Endpoint for a user to enter in health metrics.
- * Requires {@link HealthInfo} as body.
- */
 @RestController
 public final class LeavePackAsOwner {
 	@Autowired
@@ -22,6 +18,14 @@ public final class LeavePackAsOwner {
 	@Autowired
 	private PackDataService packDataService;
 
+	/**
+	 * Leave a pack as the owner of the pack.
+	 * @param newOwner Username of new owner
+	 * @return 200 on success, or already not in pack<br>
+	 * 400 on malformed pack name<br>
+	 * 404 if pack not existent<br>
+	 * 409 if user is pack owner
+	 */
 	@PostMapping("/packs/leavePackAsOwner")
 	public void leavePackAsOwner(@RequestHeader("Token") String token, HttpServletResponse response,
 	                                   @RequestBody @NonNull NewOwner newOwner) {

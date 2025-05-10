@@ -24,6 +24,10 @@ public final class GetInvites {
 	@Autowired
 	private PackInvitesAccessor packInvitesAccessor;
 
+	/**
+	 * Retrieve the packs a user has been invited to.
+	 * @return Non-null {@link PackInvites}
+	 */
 	@GetMapping("/packs/getInvites")
 	public PackInvites getInvites(@RequestHeader("Token") String token, HttpServletResponse response) {
 		String username = accessTokenManager.getUsernameFromToken(token);
