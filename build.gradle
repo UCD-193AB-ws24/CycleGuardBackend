@@ -25,4 +25,7 @@ dependencies {
     implementation(platform("software.amazon.awssdk:bom:2.20.56"))
     implementation 'software.amazon.awssdk:dynamodb'
     implementation 'software.amazon.awssdk:dynamodb-enhanced'
+
+    implementation 'com.google.maps:google-maps-services:2.2.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
