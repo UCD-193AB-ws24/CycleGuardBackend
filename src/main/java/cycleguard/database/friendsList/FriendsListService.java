@@ -53,4 +53,20 @@ public class FriendsListService {
 		friendsListAccessor.setEntry(myFriendsList);
 		friendsListAccessor.setEntry(otherFriendsList);
 	}
+
+
+	public void setBestFriend(String username, String friendUsername) {
+		System.out.println("Setting best friend: "+friendUsername);
+		FriendsList myFriendsList = getFriendsList(username);
+
+		if (myFriendsList.getBestFriend()==null && friendUsername==null) return;
+		if (friendUsername==null) {
+			myFriendsList.setBestFriend(null);
+			friendsListAccessor.setEntry(myFriendsList);
+		}
+
+		if (!myFriendsList.getFriends().contains(friendUsername)) return;
+		myFriendsList.setBestFriend(friendUsername);
+		friendsListAccessor.setEntry(myFriendsList);
+	}
 }

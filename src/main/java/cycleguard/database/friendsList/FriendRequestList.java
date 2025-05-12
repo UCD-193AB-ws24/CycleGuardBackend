@@ -12,7 +12,7 @@ import java.util.List;
  *
  * <ul>
  *     <li>{@link FriendRequestList#receivedFriendRequests} - List of usernames who sent a request</li>
- *     <li>{@link FriendRequestList#receivedFriendRequests} - List of usernames pending a request response</li>
+ *     <li>{@link FriendRequestList#pendingFriendRequests} - List of usernames pending a request response</li>
  * </ul>
  */
 @DynamoDbBean
