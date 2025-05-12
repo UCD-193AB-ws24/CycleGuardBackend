@@ -1,10 +1,7 @@
 package cycleguard.database.packs;
 
-import cycleguard.database.AbstractDatabaseEntry;
-import cycleguard.database.accessor.AuthTokenAccessor;
 import cycleguard.util.StringDoubles;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,7 +24,7 @@ public final class PackGoal {
 	private Map<String, String> contributionMap = new TreeMap<>();
 	private boolean active = false;
 	private String goalField="distance";
-	private long startTime, endTime, goalAmount;
+	private long startTime, endTime = Long.MAX_VALUE, goalAmount;
 
 	public Map<String, String> getContributionMap() {
 		return contributionMap;
@@ -37,7 +34,7 @@ public final class PackGoal {
 		this.contributionMap = contributionMap;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 

@@ -34,7 +34,7 @@ class PackGoalService {
 	 */
 	void updateContribution(String username, PackData packData, RideInfo rideInfo) {
 		PackGoal packGoal = packData.getPackGoal();
-		if (!packGoal.isActive()) return;
+		if (!packGoal.getActive()) return;
 
 		Map<String, String> contributionMap = packGoal.getContributionMap();
 

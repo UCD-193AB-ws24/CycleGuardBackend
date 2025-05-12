@@ -4,7 +4,6 @@ import cycleguard.database.RideProcessable;
 import cycleguard.database.accessor.UserCredentialsAccessor;
 import cycleguard.database.accessor.UserProfileAccessor;
 import cycleguard.database.accessor.UserProfileAccessor.UserProfile;
-import cycleguard.database.achievements.AchievementInfo;
 import cycleguard.database.rides.ProcessRideService.RideInfo;
 import cycleguard.util.TimeUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,7 +40,7 @@ public class PackDataService implements RideProcessable {
 		if (packData==null) return null;
 
 		PackGoal packGoal = packDataAccessor.getEntry(packName).getPackGoal();
-		if (packGoal.getEndTime() > TimeUtil.getCurrentSecond() && packGoal.isActive()) {
+		if (packGoal.getEndTime() < TimeUtil.getCurrentSecond() && packGoal.getActive()) {
 			packGoal.setActive(false);
 			packDataAccessor.setEntry(packData);
 		}
