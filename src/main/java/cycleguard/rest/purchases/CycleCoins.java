@@ -6,10 +6,7 @@ import cycleguard.database.accessor.PurchaseInfoAccessor;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static cycleguard.database.accessor.PurchaseInfoAccessor.PurchaseInfo;
 
@@ -37,7 +34,7 @@ public class CycleCoins {
 		return purchaseInfo.getCycleCoins();
 	}
 
-//	@PostMapping("/purchaseInfo/addCycleCoins")
+	@PostMapping("/purchaseInfo/addCycleCoins")
 	public long addCycleCoins(@RequestHeader("Token") String token, HttpServletResponse response,
 	                          @NonNull @RequestBody AddCycleCoinsBody body) {
 		String username = accessTokenManager.getUsernameFromToken(token);
