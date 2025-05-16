@@ -39,6 +39,7 @@ public class GetAutofill {
 		var sessionToken = new PlaceAutocompleteRequest.SessionToken(token);
 		AutocompletePrediction[] res = PlacesApi.placeAutocomplete(geoApiContextProvider.getContext(),
 						body.input, sessionToken)
+				.location(new LatLng(body.latitude, body.longitude))
 				.await();
 
 		return new LocationList(res);
@@ -46,11 +47,14 @@ public class GetAutofill {
 
 	public static class AutofillBody {
 		public String input;
+		public double latitude, longitude;
 
 		@Override
 		public String toString() {
 			return "AutofillBody{" +
 					"input='" + input + '\'' +
+					", latitude=" + latitude +
+					", longitude=" + longitude +
 					'}';
 		}
 	}

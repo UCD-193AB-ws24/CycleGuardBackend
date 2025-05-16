@@ -32,7 +32,7 @@ public final class SetHealthInfo {
 			return "UNAUTHORIZED";
 		}
 
-		if (healthInfo.getAgeYears()<=0 || healthInfo.getHeightInches()<=0 || healthInfo.getWeightPounds()<=0) {
+		if (healthInfo.getAgeYears()<0 || healthInfo.getHeightInches()<0 || healthInfo.getWeightPounds()<0) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return "NON POSITIVE VALUES";
 		}
