@@ -36,11 +36,16 @@ public class GetAutofill {
 			return null;
 		}
 
+		LatLng latLng = new LatLng(body.latitude, body.longitude);
+//		System.out.println(latLng);
 		var sessionToken = new PlaceAutocompleteRequest.SessionToken(token);
 		AutocompletePrediction[] res = PlacesApi.placeAutocomplete(geoApiContextProvider.getContext(),
 						body.input, sessionToken)
-				.location(new LatLng(body.latitude, body.longitude))
+				.location(latLng)
+				.origin(latLng)
 				.await();
+
+
 
 		return new LocationList(res);
 	}
