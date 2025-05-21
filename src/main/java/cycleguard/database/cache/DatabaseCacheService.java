@@ -13,8 +13,8 @@ import java.util.List;
 
 @Service
 public class DatabaseCacheService {
-	public static final int CACHE_LIFETIME_MILLIS = 1000;
-	public static final int BLANK_LIFETIME_MILLIS = 5000;
+	public static final int CACHE_LIFETIME_MILLIS = 60_000;
+	public static final int BLANK_LIFETIME_MILLIS = 180_000;
 	public static final int MAX_CACHE_WRITES = 3;
 	@Autowired
 	private TaskScheduler executor;
