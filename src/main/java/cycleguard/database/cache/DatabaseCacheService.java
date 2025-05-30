@@ -16,13 +16,13 @@ public class DatabaseCacheService {
 	public static final int CACHE_LIFETIME_MILLIS = 60_000;
 	public static final int BLANK_LIFETIME_MILLIS = 180_000;
 	public static final int MAX_CACHE_WRITES = 3;
+	public static final Duration CLEAR_DELAY = Duration.of(1, ChronoUnit.MINUTES);
 	@Autowired
 	private TaskScheduler executor;
 
 	@PostConstruct
 	public void postConstruct() {
-		executor.scheduleWithFixedDelay(new CacheServiceRunnable(),
-				Duration.of(1, ChronoUnit.MINUTES));
+		executor.scheduleWithFixedDelay(new CacheServiceRunnable(), CLEAR_DELAY);
 	}
 
 	private final List<AbstractDatabaseAccessor> subscriptions = new ArrayList<>();

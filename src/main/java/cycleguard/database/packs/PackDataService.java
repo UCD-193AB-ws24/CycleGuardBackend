@@ -66,12 +66,14 @@ public class PackDataService implements RideProcessable {
 	 * 409 on conflict with another pack name, or if user already in another pack
 	 */
 	public int createPack(String username, String packName, String password) {
+		if (packName==null) return HttpServletResponse.SC_BAD_REQUEST;
 		packName = packName.trim();
 		if (packName.isEmpty()) return HttpServletResponse.SC_BAD_REQUEST;
 
 		UserProfile userProfile = userProfileAccessor.getEntryOrDefaultBlank(username);
 		if (userProfile.getPack() != null && !userProfile.getPack().isEmpty())
 			return HttpServletResponse.SC_CONFLICT;
+
 		if (packExists(packName)) return HttpServletResponse.SC_CONFLICT;
 
 		String hashedPassword = passwordEncoder.encode(password);

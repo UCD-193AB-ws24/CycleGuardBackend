@@ -29,6 +29,7 @@ public final class Login {
 	 */
 	@PostMapping("/account/login")
 	public String login(@RequestBody @NonNull AccountCredentials credentials) {
+		if (credentials==null || credentials.getUsername()==null || credentials.getPassword()==null) return "INVALID";
 		if (!accountService.isValidLogin(credentials)) return "INVALID";
 
 		String token = accessTokenManager.setRandomNewToken(credentials.getUsername());

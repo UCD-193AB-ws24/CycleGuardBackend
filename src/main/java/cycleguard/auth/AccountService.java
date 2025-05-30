@@ -50,6 +50,7 @@ public class AccountService {
 	 * @param credentials Username and password of user
 	 */
 	public void createAccount(AccountCredentials credentials) {
+		if (credentials==null || credentials.getUsername()==null || credentials.getPassword()==null) return;
 		HashedUserCredentials hashedUserCredentials = createHashedUser(credentials);
 		userCredentialsAccessor.setEntry(hashedUserCredentials);
 

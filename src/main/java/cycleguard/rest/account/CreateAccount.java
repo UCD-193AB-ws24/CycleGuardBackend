@@ -34,6 +34,7 @@ public final class CreateAccount {
 	 */
 	@PostMapping("/account/create")
 	public String createAccount(@RequestBody @NonNull AccountCredentials credentials) {
+		if (credentials==null) return "";
 		if (checkUsername.checkUsername(credentials)) return "DUPLICATE";
 
 		accountService.createAccount(credentials);

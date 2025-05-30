@@ -20,6 +20,7 @@ public class CheckUsername {
 	 */
 	@GetMapping("/account/checkUsername")
 	public boolean checkUsername(@RequestBody @NonNull AccountCredentials credentials) {
+		if (credentials==null || credentials.getUsername()==null) return false;
 		return userCredentialsAccessor.hasEntry(credentials.getUsername());
 	}
 }

@@ -134,6 +134,7 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * <code>null</code> if the key does not exist in the table
 	 */
 	public EntryType getEntry(String key) {
+		if (key==null || key.isEmpty()) return null;
 		long timeToDelete = System.currentTimeMillis() + DatabaseCacheService.CACHE_LIFETIME_MILLIS;
 		CacheEntry<EntryType> cacheEntry = cache.getOrDefault(key, null);
 		if (cacheEntry != null) {
@@ -142,8 +143,9 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 		}
 
 		EntryType entry = getTableInstance().getItem(getKey(key));
-		cache.put(key, new CacheEntry<>(timeToDelete, entry, false));
-		return getTableInstance().getItem(getKey(key));
+		if (entry != null)
+			cache.put(key, new CacheEntry<>(timeToDelete, entry, false));
+		return entry;
 	}
 
 	/**
@@ -182,8 +184,9 @@ public abstract class AbstractDatabaseAccessor<EntryType extends AbstractDatabas
 	 * @return <code>true</code> if the key is found in the table, <code>false</code> otherwise
 	 */
 	public boolean hasEntry(String key) {
-		return cache.containsKey(key) ||
-				getTableInstance().getItem(getKey(key)) != null;
+		if (key==null || key.isEmpty()) return false;
+		if (blankEntries.containsKey(key)) return false;
+		return getEntry(key) != null;
 	}
 
 	/**
