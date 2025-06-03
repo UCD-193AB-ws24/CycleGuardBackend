@@ -36,16 +36,16 @@ public class GetAutofill {
 			return null;
 		}
 
-		System.out.println("getAutofill called: "+username);
-		System.out.println(body);
+//		System.out.println("getAutofill called: "+username);
+//		System.out.println(body);
 
 		LatLng latLng = new LatLng(body.latitude, body.longitude);
-		System.out.println(latLng);
+//		System.out.println(latLng);
 		var sessionToken = new PlaceAutocompleteRequest.SessionToken(token);
 		AutocompletePrediction[] res = PlacesApi.placeAutocomplete(geoApiContextProvider.getContext(),
 						body.input, sessionToken)
 				.location(latLng)
-//				.radius(2000)
+				.radius(10000)
 //				.origin(latLng)
 				.await();
 
@@ -72,7 +72,7 @@ public class GetAutofill {
 
 		public LocationList(AutocompletePrediction[] predictions) {
 			results = Arrays.stream(predictions).map(p->p.description).toList();
-			System.out.println(results);
+//			System.out.println(results);
 		}
 
 
