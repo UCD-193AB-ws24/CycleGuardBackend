@@ -45,9 +45,9 @@ public class GetAutofill {
 		AutocompletePrediction[] res = PlacesApi.placeAutocomplete(geoApiContextProvider.getContext(),
 						body.input, sessionToken)
 				.location(latLng)
-				.origin(latLng)
+//				.radius(2000)
+//				.origin(latLng)
 				.await();
-
 
 
 		return new LocationList(res);
@@ -72,6 +72,7 @@ public class GetAutofill {
 
 		public LocationList(AutocompletePrediction[] predictions) {
 			results = Arrays.stream(predictions).map(p->p.description).toList();
+			System.out.println(results);
 		}
 
 
